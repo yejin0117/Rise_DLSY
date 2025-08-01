@@ -1,0 +1,67 @@
+.gradient-bg {
+    background: #4b4a51;
+}
+.footer-container{
+    padding: 0  50px 10px 50px; /* 상하좌우 여백 */
+    justify-content: center; /* 가로 중앙 정렬 */
+}
+.footer-grid {
+    display: flex;
+    gap:50px;
+    align-items: flex-start;
+    flex-wrap: wrap; /* 모바일 대응 */
+}
+.footer-link {
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #93c5fd;
+    transform: translateX(5px);
+}
+
+.footer-logo {
+    transition: transform 0.3s ease;
+}
+
+.footer-container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.footer-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.text-sm{
+    text-align: center;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .footer-contact {
+        margin-top: 2rem;
+    }
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+    .gradient-bg {
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+}
