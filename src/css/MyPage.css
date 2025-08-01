@@ -1,0 +1,151 @@
+.mypage-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mypage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.mypage-header h1 {
+    margin: 0;
+    color: #333;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-section,
+.stats-section {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section h2,
+.stats-section h2 {
+    color: #444;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.profile-info,
+.stats-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item,
+.stat-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item label,
+.stat-item label {
+    width: 120px;
+    font-weight: bold;
+    color: #666;
+}
+
+.info-item span,
+.stat-item span {
+    color: #333;
+}
+
+.actions-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.edit-profile-btn,
+.change-password-btn,
+.logout-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.edit-profile-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.edit-profile-btn:hover {
+    background-color: #45a049;
+}
+
+.change-password-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.change-password-btn:hover {
+    background-color: #1976D2;
+}
+
+.logout-btn {
+    background-color: #ff4444;
+    color: white;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+@media (max-width: 600px) {
+    .mypage-container {
+        padding: 10px;
+    }
+
+    .mypage-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-buttons {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .info-item,
+    .stat-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .info-item label,
+    .stat-item label {
+        width: 100%;
+    }
+
+    .actions-section {
+        flex-direction: column;
+    }
+
+    .edit-profile-btn,
+    .change-password-btn,
+    .logout-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

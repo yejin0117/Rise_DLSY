@@ -1,14 +1,32 @@
 // header.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Main() {
+function Header() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalContent, setModalContent] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    // 컴포넌트 마운트 시 로그인 상태 확인
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+
+    // 사용자 데이터 가져오기
+    const userDataStr = localStorage.getItem('currentUser');
+    if (userDataStr) {
+      setUserData(JSON.parse(userDataStr));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    setIsLoggedIn(false);
+    setUserData(null);
+    navigate('/');
+  };
 
   return (
     <>
@@ -23,25 +41,27 @@ function Main() {
             <div className="user-info-header">
               <div className="info-box">
                 <div className="info-label">내 점수</div>
-                <div className="info-value">1,250</div>
+                <div className="info-value">{userData ? userData.bestScore : '-'}</div>
               </div>
               <div className="info-box">
                 <div className="info-label">랭킹</div>
-                <div className="info-value">#42</div>
+                <div className="info-value">{userData ? '#23' : '-'}</div>
               </div>
-               <div className="profile-icon">
-                  {isLoggedIn ? (
-                    <span>👤</span>
-                  ) : (
-                    <Link to="/login">👤</Link>
-                  )}
-                </div>
+              <div className="profile-section-header">
+                {isLoggedIn ? (
+                  <>
+                    <Link to="/mypage" className="profile-icon login-status">👤</Link>
+                  </>
+                ) : (
+                  <Link to="/login" className="profile-icon">👤</Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </header>
-      </>
+    </>
   );
 }
 
-export default Main;
+export default Header;
