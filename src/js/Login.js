@@ -11,7 +11,7 @@ const DUMMY_USERS = [
     id: 'test1',
     password: 'test123',
     username: '테스트유저1',
-    email: 'test1@example.com',
+    email: 'test1@test.com',
     school:'안양고등학교',
     joinDate: '2024-07-01',
     totalGames: 15,
@@ -31,7 +31,7 @@ const DUMMY_USERS = [
 
 function Login({ t, onLoginSuccess }) {
   const navigate = useNavigate();
-  const [Id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -55,29 +55,46 @@ function Login({ t, onLoginSuccess }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage('');
 
-    if (!Id || !password) {
-      setErrorMessage('아이디와 비밀번호를 모두 입력해주세요.');
+    if (!email || !password) {
+      setErrorMessage('이메일과 비밀번호를 모두 입력해주세요.');
       return;
     }
 
-    // 더미 데이터에서 사용자 확인
-    const user = DUMMY_USERS.find(user => user.id === Id && user.password === password);
+      try{
+        // API 호출 로직 구현
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-    if (user) {
-      // 로그인 성공
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      onLoginSuccess();
-      navigate('/');
-    } else {
-      // 로그인 실패
-      setErrorMessage('아이디 또는 비밀번호가 올바르지 않습니다.');
-    }
-  };
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('isLoggedIn', 'true');
+
+          //user 정보도 함께 받는 경우
+          if(data.user){
+            localStorage.setItem('currentUser', JSON.stringify(data.user));
+          }
+          localStorage.setItem('authToken', data.token); // ← 있으면 저장
+
+          onLoginSuccess();
+          navigate('/');
+        } else {
+          setErrorMessage(data.message || '로그인 중 오류가 발생했습니다.');
+        }
+      }catch (err) {
+        console.error('로그인 오류:', err);
+        setErrorMessage('서버 연결 중 오류가 발생했습니다.');
+      }
+    };
 
   const handleBack = () => {
     navigate('/');
@@ -107,9 +124,9 @@ function Login({ t, onLoginSuccess }) {
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             <input
               type="text"
-              placeholder={t.Id}
-              value={Id}
-              onChange={(e) => setId(e.target.value)}
+              placeholder={t.email}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <div className="password-container">

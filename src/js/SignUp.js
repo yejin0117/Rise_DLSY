@@ -36,15 +36,13 @@ function SignUp() {
 
     try {
       // API 호출 로직 구현
-      const response = await // ✅ proxy가 http://localhost:4000 으로 자동 연결해줌
-          fetch('/api/auth/signup', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         navigate('/login');

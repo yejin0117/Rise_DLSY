@@ -23,6 +23,7 @@ function App() {
   const t = {
     title: '로그인',
     Id: '아이디',
+    email: '이메일',
     password: '비밀번호',
     login: '로그인',
     signup: '회원가입',
