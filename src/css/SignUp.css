@@ -228,3 +228,12 @@
     font-size: 15px;
   }
 }
+.success-message {
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
