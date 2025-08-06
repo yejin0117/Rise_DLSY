@@ -36,7 +36,7 @@ function SignUp() {
 
     try {
       // API 호출 로직 구현
-      const response = await fetch('/api/signup', {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

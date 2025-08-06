@@ -66,7 +66,7 @@ function Login({ t, onLoginSuccess }) {
 
       try{
         // API 호출 로직 구현
-        const response = await fetch('/api/login', {
+        const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
