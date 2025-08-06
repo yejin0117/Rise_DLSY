@@ -64,6 +64,7 @@ function Login({ t, onLoginSuccess }) {
       return;
     }
 
+    // 백엔드 친구들을 위한 API 호출
       try{
         // API 호출 로직 구현
         const response = await fetch('/api/auth/login', {
@@ -103,6 +104,73 @@ function Login({ t, onLoginSuccess }) {
   const handleSignUp = () => {
     navigate('/signup');
   };
+
+  // DB가 없어 슬픈 프론트를 위한 더미데이터 사용 로그인
+  /*
+    // 더미 데이터로 로그인 처리 (개발 완료 후 삭제)
+  const handleDummyLogin = () => {
+    const user = DUMMY_USERS.find(
+      user => user.email === email && user.password === password
+    );
+
+    if (user) {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      localStorage.setItem('authToken', 'dummy-token');
+      onLoginSuccess();
+      navigate('/');
+      return true;
+    }
+    return false;
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+
+    if (!email || !password) {
+      setErrorMessage('이메일과 비밀번호를 모두 입력해주세요.');
+      return;
+    }
+
+    // 더미 데이터로 로그인 시도 (개발 완료 후 이 부분 삭제)
+    if (USE_DUMMY_DATA && handleDummyLogin()) {
+      return;
+    }
+
+    try {
+      // API 호출 로직
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('isLoggedIn', 'true');
+        if (data.user) {
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+        }
+        localStorage.setItem('authToken', data.token);
+        onLoginSuccess();
+        navigate('/');
+      } else {
+        setErrorMessage(data.message || '로그인 중 오류가 발생했습니다.');
+      }
+    } catch (err) {
+      console.error('로그인 오류:', err);
+      if (USE_DUMMY_DATA) {
+        setErrorMessage('이메일 또는 비밀번호가 일치하지 않습니다.');
+      } else {
+        setErrorMessage('서버 연결 중 오류가 발생했습니다.');
+      }
+    }
+  };
+    */
 
   return (
     <>
