@@ -130,6 +130,34 @@
   cursor: pointer;
 }
 
+.school-select {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.school-select input {
+  flex: 1;
+  width: 100%;
+}
+
+.school-search-button {
+  background: #667eea;
+  color: var(--button-text);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  padding: 12px 20px;
+  white-space: nowrap;
+}
+
+.school-search-button:hover {
+  opacity: 0.7;
+}
+
 .signup-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: var(--button-text);
