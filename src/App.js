@@ -6,6 +6,9 @@ import SignUp from './js/SignUp';
 import Ranking from './js/Ranking';
 import MyPage from './js/MyPage';
 import NotFound from './pages/NotFound';
+import NewsGame from './js/NewsGame';
+import FakeNewsGame from './js/FakeNewsGame';
+import BadgesPage from './pages/BadgesPage/BadgesPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +41,9 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/news-game" element={<NewsGame />} />
+        <Route path="/fake-news-game" element={<FakeNewsGame />} />
+        <Route path="/badges" element={<BadgesPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

@@ -7,7 +7,7 @@ import Footer from './footer';
 
 function Main() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
@@ -34,6 +34,14 @@ function Main() {
     { rankEmoji: '🥈', name: '이팩트', school: '부산중학교', score: 2720, color: 'gray' },
     { rankEmoji: '🥉', name: '박뉴스', school: '대구고등학교', score: 2650, color: 'orange' },
   ];
+
+  const handleStartGame = (gameType) => {
+    if (gameType === 'summary') {
+      navigate('/news-game');
+    } else if (gameType === 'factcheck') {
+      navigate('/fake-news-game');
+    }
+  };
 
   return (
     <>
@@ -86,8 +94,7 @@ function Main() {
               desc: '뉴스 기사를 읽고 핵심 내용을 한 줄로 요약해보세요. AI와 비교하여 점수를 받습니다.',
               score: '+100점',
               color: 'blue',
-              onClick: () =>
-                openModal('뉴스 한 줄 요약 챌린지', '요약 과제가 시작됩니다.'),
+              onClick: () => handleStartGame('summary'),
             },
             
             {
@@ -95,8 +102,7 @@ function Main() {
               desc: '진짜 뉴스와 AI가 생성한 가짜 뉴스를 구별해보세요.',
               score: '+100점',
               color: 'red',
-              onClick: () =>
-                openModal('가짜뉴스 구별 챌린지', '판별 과제가 시작됩니다.'),
+              onClick: () => handleStartGame('factcheck'),
             },
           ].map((card, i) => (
             <div key={i} className="challenge-card" onClick={card.onClick}>

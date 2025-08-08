@@ -35,14 +35,6 @@ function Ranking() {
         { value: 'high', label: '고등학생' }
     ];
 
-    // 순위 변동 스타일 결정
-    const getChangeStyle = (change) => {
-        const num = parseInt(change);
-        if (num > 0) return 'change-up';
-        if (num < 0) return 'change-down';
-        return 'change-same';
-    };
-
     return (
         <>
             <Header />
@@ -91,9 +83,6 @@ function Ranking() {
                                 </div>
                                 <div className="score-info">
                                     <div className="score">{item.score.toLocaleString()}점</div>
-                                    <div className={`rank-change ${getChangeStyle(item.change)}`}>
-                                        {item.change}
-                                    </div>
                                 </div>
                             </div>
                         ))}
