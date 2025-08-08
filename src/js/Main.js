@@ -51,23 +51,13 @@ function Main() {
                 label: '뉴스 요약',
                 progress: 60,
                 current: 3,
-                total: 5,
                 color: 'blue',
-              },
-              {
-                icon: '⚖️',
-                label: '편향 뉴스 찾기',
-                progress: 67,
-                current: 2,
-                total: 3,
-                color: 'orange',
               },
               {
                 icon: '🔍',
                 label: '가짜뉴스 구별',
                 progress: 33,
                 current: 1,
-                total: 3,
                 color: 'red',
               },
             ].map((item, i) => (
@@ -75,7 +65,7 @@ function Main() {
                 <div className="progress-icon">{item.icon}</div>
                 <div className="progress-label">{item.label}</div>
                 <div className={`progress-value text-${item.color}`}>
-                  {item.current}/{item.total}
+                  {item.current}
                 </div>
                 <div className="progress-bar-bg">
                   <div
@@ -94,26 +84,16 @@ function Main() {
             {
               title: '뉴스 한 줄 요약',
               desc: '뉴스 기사를 읽고 핵심 내용을 한 줄로 요약해보세요. AI와 비교하여 점수를 받습니다.',
-              score: '+50점',
-              difficulty: '⭐⭐⭐',
+              score: '+100점',
               color: 'blue',
               onClick: () =>
                 openModal('뉴스 한 줄 요약 챌린지', '요약 과제가 시작됩니다.'),
             },
-            {
-              title: '편향 뉴스 찾기',
-              desc: '같은 주제를 다룬 두 기사를 비교하고 편향성을 판단해보세요.',
-              score: '+75점',
-              difficulty: '⭐⭐⭐⭐',
-              color: 'orange',
-              onClick: () =>
-                openModal('편향 뉴스 찾기 챌린지', '편향 뉴스 과제가 시작됩니다.'),
-            },
+            
             {
               title: '가짜뉴스 구별',
               desc: '진짜 뉴스와 AI가 생성한 가짜 뉴스를 구별해보세요.',
               score: '+100점',
-              difficulty: '⭐⭐⭐⭐⭐',
               color: 'red',
               onClick: () =>
                 openModal('가짜뉴스 구별 챌린지', '판별 과제가 시작됩니다.'),
@@ -126,7 +106,6 @@ function Main() {
               </div>
               <p className="card-desc">{card.desc}</p>
               <div className="card-footer">
-                <span className="difficulty">난이도: {card.difficulty}</span>
                 <button className={`challenge-btn btn-${card.color}`}>도전하기 →</button>
               </div>
             </div>

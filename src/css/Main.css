@@ -29,12 +29,14 @@
 .container {
   max-width: 1200px;
   margin: auto;
-  padding: 0 48px;  /* 24px에서 48px로 증가 */
+  padding: 100px 48px 0;  /* 24px에서 48px로 증가 */
+  border-top: 1px solid transparent; 
 }
 
 /* Main */
 .main-content {
-  padding: 40px 0;
+  padding: 40px;
+  padding-top: 100px;
 }
 
 .section-box {
@@ -43,6 +45,7 @@
   padding: 32px 48px;  /* 24px에서 상하 32px, 좌우 48px로 증가 */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   margin-bottom: 32px;
+  margin-top: 32px;
 }
 
 .section-title {
@@ -105,10 +108,10 @@
 .card-grid {
   color:#000000;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
   margin: 0 auto 40px;
-  max-width: 100%;  /* 전체 너비의 90%로 제한 */
+  max-width: 95%;
   width: 100%;
 }
 
@@ -117,6 +120,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   padding: 32px 40px;  /* 24px에서 상하 32px, 좌우 48px로 증가 */
+  height: 200px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -141,11 +145,6 @@
 .score-blue {
   background: #dbeafe;
   color: #2563eb;
-}
-
-.score-orange {
-  background: #fef3c7;
-  color: #d97706;
 }
 
 .score-red {
