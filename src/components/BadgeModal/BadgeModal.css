@@ -1,0 +1,115 @@
+.badge-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.badge-modal {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  animation: slideIn 0.5s ease-out;
+}
+
+.badge-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.badge-modal-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.badge-showcase {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.badge-description {
+  text-align: center;
+  margin: 20px 0;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.continue-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.continue-button:hover {
+  background-color: #45a049;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+  .badge-modal {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .badge-modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .badge-description {
+    font-size: 1rem;
+  }
+}
