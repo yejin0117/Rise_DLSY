@@ -32,7 +32,7 @@ function FakeNewsGame() {
 
   const handleAnswer = async (selectedIndex) => {
     try {
-      const res = await fetch("/submit/api/fake-news", {
+      const res = await fetch("/api/fake-news/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

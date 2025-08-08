@@ -30,7 +30,7 @@ function NewsGame() {
     }
 
     try {
-      const response = await fetch('/submit/api/compare-random', {
+      const response = await fetch('/api/compare-random/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
