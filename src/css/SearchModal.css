@@ -144,3 +144,113 @@
 .search-results::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content {
+    background: #1E1E1E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .modal-content h2 {
+    color: #E5E7EB;
+  }
+
+  .close-button {
+    color: #9CA3AF;
+  }
+
+  .close-button:hover {
+    color: #E5E7EB;
+  }
+
+  .search-select,
+  .search-input {
+    background-color: #2C2C2C;
+    border-color: #404040;
+    color: #E5E7EB;
+  }
+
+  .search-select:focus,
+  .search-input:focus {
+    border-color: #60A5FA;
+    outline: none;
+  }
+
+  .search-button {
+    background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+  }
+
+  .search-button:hover {
+    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    transform: translateY(-2px);
+  }
+
+  .results-count {
+    color: #9CA3AF;
+  }
+
+  .result-item {
+    background-color: #2C2C2C;
+    border-color: #404040;
+  }
+
+  .result-item:hover {
+    background-color: #323232;
+    border-color: #60A5FA;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .result-item h4 {
+    color: #E5E7EB;
+  }
+
+  .result-item p {
+    color: #9CA3AF;
+  }
+
+  .loading,
+  .no-results {
+    color: #9CA3AF;
+  }
+
+  /* 스크롤바 다크모드 스타일링 */
+  .modal-content::-webkit-scrollbar-track,
+  .search-results::-webkit-scrollbar-track {
+    background: #2C2C2C;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb,
+  .search-results::-webkit-scrollbar-thumb {
+    background: #404040;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb:hover,
+  .search-results::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
+  }
+
+  /* 선택 옵션 스타일링 */
+  .search-select option {
+    background-color: #2C2C2C;
+    color: #E5E7EB;
+  }
+
+  /* 플레이스홀더 색상 */
+  .search-input::placeholder {
+    color: #6B7280;
+  }
+
+  /* 전환 효과 */
+  .search-select,
+  .search-input,
+  .search-button,
+  .result-item {
+    transition: all 0.3s ease;
+  }
+}

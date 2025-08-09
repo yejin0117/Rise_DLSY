@@ -2,6 +2,51 @@ import React, { useState, useEffect } from 'react';
 import '../css/NewsGame.css';
 import Header from './header';
 import Footer from './footer';
+import BadgeModal from '../components/BadgeModal/BadgeModal';
+
+  // // ✅ GET: 뉴스 불러오기
+  // const fetchNews = async () => {
+  //   try {
+  //     const response = await fetch('/api/compare-random');
+  //     if (!response.ok) throw new Error('뉴스 불러오기 실패');
+
+  //     const data = await response.json();
+  //     setNews(data);
+  //   } catch (error) {
+  //     console.error('뉴스 로딩 오류:', error);
+  //   }
+  // };
+
+  // // ✅ POST: 요약 제출
+  // const handleSubmit = async () => {
+  //   if (!userSummary.trim()) {
+  //     alert('요약문을 입력해주세요.');
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch('/api/compare-random/submit', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         newsId: news.id,
+  //         userSummary: userSummary,
+  //       }),
+  //     });
+
+  //     if (!response.ok) throw new Error('제출 실패');
+
+  //     const data = await response.json();
+  //     setResult(data);
+  //     setIsSubmitted(true);
+  //   } catch (error) {
+  //     console.error('제출 오류:', error);
+  //     alert('제출 중 오류가 발생했습니다.');
+  //   }
+  // };
+
 
 // 더미 뉴스 데이터
 const dummyNews = [

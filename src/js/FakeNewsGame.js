@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/FakeNewsGame.css';
 import Header from './header';
 import Footer from './footer';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 
-// 더미 뉴스 데이터
+// TODO: API 연동 후 제거
 const dummyNewsData = [
   {
     article: "서울시는 내년부터 도시 전체 조명을 LED로 교체하는 사업을 시작한다. 이번 사업으로 전기 사용량이 30% 가량 절감될 것으로 예상된다. 시 관계자는 '5년에 걸쳐 단계적으로 진행할 예정'이라고 밝혔다.",
@@ -31,9 +31,71 @@ function FakeNewsGame() {
   const [answers, setAnswers] = useState([]);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [earnedBadge, setEarnedBadge] = useState(null);
+  const [newsData, setNewsData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // 뱃지 체크 함수
-  const checkEarnedBadge = (score, totalQuestions) => {
+  // 뉴스 기사 불러오기
+  useEffect(() => {
+    // TODO: API 연동 후 수정
+    // const fetchNewsArticles = async () => {
+    //   try {
+    //     setLoading(true);
+    //     const response = await fetch('/api/fake-news', {
+    //       method: 'GET',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //       }
+    //     });
+    //
+    //     if (!response.ok) throw new Error('뉴스 기사 로딩 실패');
+    //
+    //     const data = await response.json();
+    //     setNewsData(data);
+    //     setError(null);
+    //   } catch (error) {
+    //     console.error('뉴스 기사 로딩 중 오류:', error);
+    //     setError('뉴스 기사를 불러오는데 실패했습니다.');
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    //
+    // fetchNewsArticles();
+
+    // 임시 로직
+    setNewsData(dummyNewsData);
+    setLoading(false);
+  }, []);
+
+  // 뱃지 체크 함수 엔드포인트 수정필요
+  const checkEarnedBadge = async (score, totalQuestions) => {
+    // TODO: API 연동 후 수정
+    // try {
+    //   const response = await fetch('/api/check-badge', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //     },
+    //     body: JSON.stringify({
+    //       gameType: 'fake-news',
+    //       score,
+    //       totalQuestions,
+    //       userId: localStorage.getItem('userId')
+    //     })
+    //   });
+    //   
+    //   if (!response.ok) throw new Error('뱃지 확인 실패');
+    //   const badge = await response.json();
+    //   return badge;  // { name, image, description }
+    // } catch (error) {
+    //   console.error('뱃지 확인 중 오류:', error);
+    //   return null;
+    // }
+
+    // 임시 로직
     const percentage = (score / totalQuestions) * 100;
     if (percentage === 100) {
       return {
@@ -51,8 +113,47 @@ function FakeNewsGame() {
     return null;
   };
 
-  const handleAnswer = (isRealSelected) => {
-    const currentQuestion = dummyNewsData[currentQuestionIndex];
+  // 답변 제출 함수
+  const submitAnswer = async (isRealSelected, currentQuestion) => {
+    // TODO: API 연동 후 수정
+    // try {
+    //   const response = await fetch('/api/fake-news/submit', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //     },
+    //     body: JSON.stringify({
+    //       newsId: currentQuestion.id,
+    //       userAnswer: isRealSelected,
+    //       userId: localStorage.getItem('userId'),
+    //       timeSpent: calculateTimeSpent() // 답변 시간 측정 함수 필요
+    //     })
+    //   });
+    //
+    //   if (!response.ok) throw new Error('답변 제출 실패');
+    //   const result = await response.json();
+    //   return result.isCorrect;
+    // } catch (error) {
+    //   console.error('답변 제출 중 오류:', error);
+    //   return null;
+    // }
+
+    // 임시 로직
+    return isRealSelected === currentQuestion.isReal;
+  };
+
+  const handleAnswer = async (isRealSelected) => {
+    const currentQuestion = newsData[currentQuestionIndex];
+    
+    // TODO: API 연동 후 수정
+    // const isCorrect = await submitAnswer(isRealSelected, currentQuestion);
+    // if (isCorrect === null) {
+    //   setError('답변 제출 중 오류가 발생했습니다.');
+    //   return;
+    // }
+    
+    // 임시 로직
     const isCorrect = isRealSelected === currentQuestion.isReal;
     
     const newAnswers = [
@@ -68,9 +169,39 @@ function FakeNewsGame() {
     setAnswers(newAnswers);
     if (isCorrect) setScore(prev => prev + 1);
 
-    if (currentQuestionIndex === dummyNewsData.length - 1) {
-      // 마지막 문제일 경우
-      const badge = checkEarnedBadge(isCorrect ? score + 1 : score, dummyNewsData.length);
+    if (currentQuestionIndex === newsData.length - 1) {
+      // TODO: API 연동 후 수정 이건 
+      // try {
+      //   // 게임 결과 저장
+      //   await fetch('/api/save-game-result', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+      //     },
+      //     body: JSON.stringify({
+      //       gameType: 'fake-news',
+      //       score: isCorrect ? score + 1 : score,
+      //       totalQuestions: newsData.length,
+      //       answers: newAnswers,
+      //       userId: localStorage.getItem('userId'),
+      //       totalTime: calculateTotalTime() // 총 게임 시간 측정 함수 필요
+      //     })
+      //   });
+
+      //   // 뱃지 확인
+      //   const badge = await checkEarnedBadge(isCorrect ? score + 1 : score, newsData.length);
+      //   if (badge) {
+      //     setEarnedBadge(badge);
+      //     setShowBadgeModal(true);
+      //   }
+      // } catch (error) {
+      //   console.error('게임 결과 저장 중 오류:', error);
+      //   setError('게임 결과 저장 중 오류가 발생했습니다.');
+      // }
+
+      // 임시 로직
+      const badge = checkEarnedBadge(isCorrect ? score + 1 : score, newsData.length);
       if (badge) {
         setEarnedBadge(badge);
         setShowBadgeModal(true);
@@ -88,7 +219,12 @@ function FakeNewsGame() {
     setCurrentQuestionIndex(0);
     setShowBadgeModal(false);
     setEarnedBadge(null);
+    setError(null);
   };
+
+  if (loading) return <div className="loading">뉴스를 불러오는 중입니다...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!newsData) return <div className="error">뉴스를 불러올 수 없습니다.</div>;
 
   return (
     <>
@@ -100,12 +236,12 @@ function FakeNewsGame() {
           {!showResult ? (
             <div className="news-card-fake">
               <p className="question-counter">
-                문제 {currentQuestionIndex + 1} / {dummyNewsData.length}
+                문제 {currentQuestionIndex + 1} / {newsData.length}
               </p>
               <div className="news-article-fake">
                 <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
-                <p className="article-content-fake ">
-                  {dummyNewsData[currentQuestionIndex].article}
+                <p className="article-content-fake">
+                  {newsData[currentQuestionIndex].article}
                 </p>
               </div>
                 <div className="button-container-fake">
@@ -128,11 +264,11 @@ function FakeNewsGame() {
               <h2 className="result-title">게임 결과</h2>
               <div className="score-container">
                 <div className="final-score">
-                  {score} / {dummyNewsData.length}
+                  {score} / {newsData.length}
                   <span className="score-label">정답</span>
                 </div>
                 <div className="score-percentage">
-                  정확도: {Math.round((score / dummyNewsData.length) * 100)}%
+                  정확도: {Math.round((score / newsData.length) * 100)}%
                 </div>
               </div>
 

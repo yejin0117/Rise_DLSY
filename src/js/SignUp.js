@@ -27,7 +27,7 @@ function SignUp() {
   useEffect(() => {
     if (selectedSchool) {
       if (selectedSchool.SCHUL_NM.includes('초등학교')) {
-        setGradeOptions(['1~2학년', '3~4학년', '5~6학년']);
+        setGradeOptions(['1학년', '2학년', '3학년', '4학년', '5학년', '6학년']);
       } else if (selectedSchool.SCHUL_NM.includes('중학교')) {
         setGradeOptions(['1학년', '2학년', '3학년']);
       } else if (selectedSchool.SCHUL_NM.includes('고등학교')) {

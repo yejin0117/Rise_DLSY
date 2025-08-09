@@ -122,7 +122,7 @@ function Main() {
             {rankings.map((r, i) => (
               <div
                 key={i}
-                className={`ranking-item ranking-bg-${r.color}`}
+                className={`ranking-item-main  ranking-bg-${r.color}`}
               >
                 <div className="ranking-left">
                   <span className="ranking-emoji">{r.rankEmoji}</span>

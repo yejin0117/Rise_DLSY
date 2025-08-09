@@ -216,7 +216,7 @@
   gap: 16px;
 }
 
-.ranking-item {
+.ranking-item-main {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -414,4 +414,167 @@
     flex: 0 0 auto;
     width: 280px;
   }
+}
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #E5E7EB;
+  }
+
+  .body-bg {
+    background-color: #121212;
+  }
+
+  .section-box {
+    background-color: #1E1E1E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .section-title {
+    color: #ffffff;
+  }
+
+  /* Progress */
+  .progress-box {
+    border-radius: 5px;
+    background-color: #2C2C2C;
+  }
+
+  .progress-label {
+    color: #9CA3AF;
+  }
+
+  .progress-value {
+    color: #E5E7EB;
+  }
+
+  .progress-bar-bg {
+    background: #404040;
+  }
+
+  /* Challenge Cards */
+  .card-grid {
+    color: #E5E7EB;
+  }
+
+  .challenge-card {
+    background-color: #1E1E1E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .challenge-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-desc {
+    color: #9CA3AF;
+  }
+
+  /* Score Tags */
+  .score-blue {
+    background: rgba(37, 99, 235, 0.2);
+    color: #60A5FA;
+  }
+
+  .score-red {
+    background: rgba(185, 28, 28, 0.2);
+    color: #F87171;
+  }
+
+  /* Buttons */
+  .challenge-btn {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-blue {
+    background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+  }
+
+  .btn-orange {
+    background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+  }
+
+  .btn-red {
+    background: linear-gradient(135deg, #F87171 0%, #DC2626 100%);
+  }
+
+  .challenge-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Badges + Rankings */
+  .card {
+    background-color: #1E1E1E;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .ranking-item-main {
+    background-color: #2C2C2C;
+  }
+
+  .ranking-name {
+    color: #000000;
+  }
+
+  .ranking-school {
+    color: #383838;
+  }
+
+  .ranking-score {
+    color: #ffffff;
+  }
+
+  /* Ranking Backgrounds */
+  .ranking-bg-yellow {
+    background: linear-gradient(90deg, rgba(254, 243, 199, 0.8), rgba(254, 240, 138, 0.5));
+    color: #FBBF24;
+  }
+
+  .ranking-bg-gray {
+    background: linear-gradient(90deg, rgba(249, 250, 251, 0.8), rgba(243, 244, 246, 0.5));
+    color: #9CA3AF;
+  }
+
+  .ranking-bg-orange {
+    background: linear-gradient(90deg, rgba(255, 237, 213, 0.8), rgba(254, 215, 170, 0.5));
+    color: #FB923C;
+  }
+
+  .ranking-more-btn {
+    color: #ebf4ff;
+  }
+
+  .ranking-more-btn:hover {
+    color: #6fa6ff;
+  }
+
+  /* Modal */
+  .modal {
+    background-color: #1E1E1E;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-close {
+    color: #6B7280;
+  }
+
+  .modal-close:hover {
+    color: #9CA3AF;
+  }
+
+  .modal-content {
+    color: #E5E7EB;
+  }
+
+  /* Progress Bar Colors */
+  .bg-blue { background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%); }
+  .bg-orange { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); }
+  .bg-red { background: linear-gradient(135deg, #F87171 0%, #DC2626 100%); }
+
+  .text-blue { color: #60A5FA; }
+  .text-orange { color: #FBBF24; }
+  .text-red { color: #F87171; }
 }

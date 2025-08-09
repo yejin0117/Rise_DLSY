@@ -94,7 +94,7 @@
 }
 
 .edit-profile-btn:hover {
-    background-color: #788eed;
+    background-color: #2563EB;
 }
 
 .logout-btn {
@@ -201,5 +201,165 @@
     .badge-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
+    }
+}
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #E5E7EB;
+  }
+
+  .mypage-header {
+    border-bottom-color: #2C2C2C;
+  }
+
+  .mypage-header h1 {
+    color: #ffffff;
+  }
+
+  .profile-section,
+  .stats-section,
+  .badge-section {
+    background-color: #1E1E1E;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .profile-section h2,
+  .stats-section h2,
+  .badge-section h2 {
+    color: #ffffff;
+  }
+
+  .info-item,
+  .stat-item {
+    border-bottom-color: #2C2C2C;
+  }
+
+  .info-item label,
+  .stat-item label {
+    color: #9CA3AF;
+  }
+
+  .info-item span,
+  .stat-item span {
+    color: #E5E7EB;
+  }
+
+  .edit-profile-btn {
+    background-color: #2563EB;
+  }
+
+  .edit-profile-btn:hover {
+    background-color: #788eed;
+  }
+
+  .logout-btn {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  }
+
+  .logout-btn:hover {
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  }
+
+  /* Badge Colors in Dark Mode */
+  .badge-gradient-yellow {
+    background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+  }
+
+  .badge-gradient-blue {
+    background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+  }
+
+  .badge-gradient-purple {
+    background: linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%);
+  }
+
+  .badge-inactive {
+    background: #2C2C2C;
+    color: #6B7280;
+  }
+
+}
+.edit-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-top: 4px;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.save-btn,
+.cancel-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background-color: #667eea;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #5a6fe0;
+    transform: translateY(-2px);
+}
+
+.cancel-btn {
+    background-color: #e2e8f0;
+    color: #4a5568;
+}
+
+.cancel-btn:hover {
+    background-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+    .edit-input {
+        background-color: #2C2C2C;
+        border-color: #404040;
+        color: #E5E7EB;
+    }
+
+    .edit-input:focus {
+        border-color: #60A5FA;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+    }
+
+    .save-btn {
+        background: linear-gradient(135deg, #60A5FA 0%, #2563EB 100%);
+    }
+
+    .save-btn:hover {
+        background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    }
+
+    .cancel-btn {
+        background-color: #4B5563;
+        color: #E5E7EB;
+    }
+
+    .cancel-btn:hover {
+        background-color: #374151;
     }
 }

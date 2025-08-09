@@ -21,16 +21,11 @@ function Ranking() {
         { rank: 10, emoji: '10', name: '배미디어', school: '강원중학교', grade: '중2', score: 2150, change: '-3' },
     ];
 
-    // 기간별 필터 옵션
-    const periodOptions = [
-        { value: 'daily', label: '일간' },
-        { value: 'weekly', label: '주간' },
-        { value: 'monthly', label: '월간' }
-    ];
-
     // 학년별 필터 옵션
     const gradeOptions = [
         { value: 'all', label: '전체' },
+        { value: 'bySchool', label: '학교별' },
+        { value: 'elementary', label: '초등학생' },
         { value: 'middle', label: '중학생' },
         { value: 'high', label: '고등학생' }
     ];
@@ -44,17 +39,6 @@ function Ranking() {
                     
                     {/* 필터 섹션 */}
                     <div className="ranking-filters">
-                        <div className="filter-group">
-                            {periodOptions.map(option => (
-                                <button
-                                    key={option.value}
-                                    className={`filter-button ${selectedPeriod === option.value ? 'active' : ''}`}
-                                    onClick={() => setSelectedPeriod(option.value)}
-                                >
-                                    {option.label}
-                                </button>
-                            ))}
-                        </div>
                         <div className="filter-group">
                             {gradeOptions.map(option => (
                                 <button

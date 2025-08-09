@@ -46,38 +46,56 @@ function Login({ t, onLoginSuccess }) {
       return;
     }
 
-    // 백엔드 친구들을 위한 API 호출
-      try{
-        // API 호출 로직 구현
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
+    // 더미 데이터로 로그인 처리 (임시)
+    const user = DUMMY_USERS.find(
+      user => user.email === email && user.password === password
+    );
 
-        const data = await response.json();
+    if (user) {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUser', JSON.stringify({
+        username: user.username,
+        email: user.email,
+        school: user.school,
+        joinDate: user.joinDate,
+        totalGames: user.totalGames,
+        bestScore: user.bestScore
+      }));
+      localStorage.setItem('authToken', 'dummy-token');
+      onLoginSuccess();
+      navigate('/');
+    } else {
+      setErrorMessage('이메일 또는 비밀번호가 일치하지 않습니다.');
+    }
 
-        if (response.ok) {
-          localStorage.setItem('isLoggedIn', 'true');
+    // TODO: API 연동 후 수정
+    // try {
+    //   const response = await fetch('/api/auth/login', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ email, password }),
+    //   });
 
-          //user 정보도 함께 받는 경우
-          if(data.user){
-            localStorage.setItem('currentUser', JSON.stringify(data.user));
-          }
-          localStorage.setItem('authToken', data.token); // ← 있으면 저장
+    //   const data = await response.json();
 
-          onLoginSuccess();
-          navigate('/');
-        } else {
-          setErrorMessage(data.message || '로그인 중 오류가 발생했습니다.');
-        }
-      }catch (err) {
-        console.error('로그인 오류:', err);
-        setErrorMessage('서버 연결 중 오류가 발생했습니다.');
-      }
-    };
+    //   if (response.ok) {
+    //     localStorage.setItem('isLoggedIn', 'true');
+    //     if (data.user) {
+    //       localStorage.setItem('currentUser', JSON.stringify(data.user));
+    //     }
+    //     localStorage.setItem('authToken', data.token);
+    //     onLoginSuccess();
+    //     navigate('/');
+    //   } else {
+    //     setErrorMessage(data.message || '로그인 중 오류가 발생했습니다.');
+    //   }
+    // } catch (err) {
+    //   console.error('로그인 오류:', err);
+    //   setErrorMessage('서버 연결 중 오류가 발생했습니다.');
+    // }
+  };
 
   const handleBack = () => {
     navigate('/');
