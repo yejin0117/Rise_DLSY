@@ -94,17 +94,17 @@ function FakeNewsGame() {
     <>
       <Header />
       <div className="fake-news-game-container">
-        <div className="game-content">
-          <h1 className="game-title">가짜 뉴스 판별하기</h1>
+        <div className="game-content-fake">
+          <h1 className="game-title-fake">가짜 뉴스 판별하기</h1>
           
           {!showResult ? (
-            <div className="news-card">
+            <div className="news-card-fake">
               <p className="question-counter">
                 문제 {currentQuestionIndex + 1} / {dummyNewsData.length}
               </p>
-              <div className="news-article">
+              <div className="news-article-fake">
                 <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
-                <p className="article-content">
+                <p className="article-content-fake ">
                   {dummyNewsData[currentQuestionIndex].article}
                 </p>
               </div>
@@ -143,7 +143,7 @@ function FakeNewsGame() {
                     className={`result-item ${answer.isCorrect ? 'correct' : 'incorrect'}`}
                   >
                     <h3>문제 {index + 1}</h3>
-                    <p className="article-content">{answer.article}</p>
+                    <p className="article-content-fake">{answer.article}</p>
                     <p><strong>당신의 판단:</strong> {answer.selectedAnswer}</p>
                     <p><strong>정답:</strong> {answer.correctAnswer}</p>
                     <p>
@@ -155,7 +155,7 @@ function FakeNewsGame() {
 
               <div className="button-container-fake">
                 <button className="retry-button" onClick={resetGame}>
-                  다시 도전하기
+                  다시하기
                 </button>
                 <button className="home-button-fake" onClick={() => window.location.href = '/'}>
                   홈으로

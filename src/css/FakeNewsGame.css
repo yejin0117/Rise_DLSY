@@ -10,7 +10,7 @@
   flex-direction: column;
 }
 
-.game-content {
+.game-content-fake {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -20,14 +20,14 @@
   flex: 1;
 }
 
-.game-title {
+.game-title-fake  {
   text-align: center;
   color: #333;
   margin-bottom: 2rem;
   font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
-.news-card {
+.news-card-fake  {
   margin-bottom: 2rem;
   width: 100%;
 }
@@ -39,19 +39,19 @@
   font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
-.news-article {
+.news-article-fake  {
   background-color: #f8f9fa;
   padding: clamp(1rem, 3vw, 2rem);
   border-radius: 8px;
   margin-bottom: 2rem;
 }
 
-.news-article h2 {
+.news-article-fake  h2 {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
   margin-bottom: 1rem;
 }
 
-.article-content {
+.article-content-fake  {
   font-size: clamp(1rem, 2.5vw, 1.1rem);
   line-height: 1.6;
   color: #333;
@@ -90,11 +90,11 @@
 }
 
 .retry-button {
-  background-color: #667eea;
+  background-color: #764ba2;
 }
 
 .home-button-fake  {
-    background-color: #764ba2;;
+    background-color: #667eea;
 }
 
 .real-button:hover,
@@ -185,7 +185,7 @@
     min-height: calc(100vh - 100px);
   }
 
-  .game-content {
+  .game-content-fake  {
     padding: 1.5rem;
   }
 
@@ -199,12 +199,19 @@
 }
 
 @media screen and (max-width: 480px) {
-  .game-content {
+  .game-content-fake  {
     padding: 1rem;
   }
 
-  .news-article {
+  .news-article-fake  {
     padding: 1rem;
+  }
+
+  .fake-button,
+  .real-button,
+  .retry-button,
+  .home-button-fake {
+    width:120px;
   }
 
   .result-item {
@@ -218,15 +225,15 @@
     padding: 1rem;
   }
 
-  .game-content {
+  .game-content-fake  {
     padding: 1rem;
   }
 
-  .game-title {
+  .game-title-fake  {
     margin-bottom: 1rem;
   }
 
-  .button-container {
+  .button-container-fake {
     margin-top: 1rem;
   }
 }
@@ -238,13 +245,13 @@
     color: #ffffff;
   }
   
-  .game-content {
+  .game-content-fake  {
     background-color: #1E1E1E;
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
 
-  .game-title {
+  .game-title-fake  {
     color: #FFFFFF;
   }
 
@@ -252,12 +259,12 @@
     color: #ffffff;
   }
 
-  .news-article {
+  .news-article-fake  {
     background-color: #2C2C2C;
     border: 1px solid #404040;
   }
 
-  .article-content {
+  .article-content-fake  {
     color: #ffffff !important; 
   }
 
@@ -328,7 +335,7 @@
   }
 
   /* 추가적인 시각적 개선 */
-  .news-article h2 {
+  .news-article-fake  h2 {
     color: #60A5FA;
   }
 

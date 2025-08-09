@@ -85,10 +85,14 @@
 .input-container {
   position: relative;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 textarea {
-  width: 100%;
+  width: 95%;
   min-height: 100px;
   padding: 16px;
   border: 2px solid #e5e7eb;
@@ -96,6 +100,7 @@ textarea {
   resize: vertical;
   font-size: 1rem;
   line-height: 1.5;
+  margin: 0 auto;
 }
 
 textarea:focus {
@@ -110,7 +115,7 @@ textarea:disabled {
 
 .char-count {
   position: absolute;
-  right: 16px;
+  right: 5%;
   bottom: 16px;
   color: #6b7280;
   font-size: 0.875rem;
@@ -125,7 +130,7 @@ textarea:disabled {
 
 .submit-btn,
 .reset-btn,
-.home-button {
+.home-btn {
   width: 100%;
   padding: 12px;
   border: none;
@@ -137,29 +142,37 @@ textarea:disabled {
 }
 
 .submit-btn {
-  background-color: #2563eb;
+  background-color: #764ba2;
   color: white;
 }
 
 .submit-btn:hover {
-  background-color: #1d4ed8;
+  opacity: 0.8;
+}
+
+.button-container-news{
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 .reset-btn {
-  background-color: #6b7280;
+  background-color: #764ba2;
   color: white;
 }
 
 .reset-btn:hover {
-  background-color: #4b5563;
+  opacity: 0.8;
 }
 
-.home-button {
-  background-color: #2196F3;
+.home-btn {
+  background-color: #667eea;
+  color:#fff;
 }
 
-.home-button:hover {
-  opacity: 0.9;
+.home-btn:hover {
+  opacity: 0.8;
 }
 
 .result-section {
@@ -187,8 +200,25 @@ textarea:disabled {
 
 .comparison {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
+}
+
+.summary-box-feedback{
+
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.summary-box-feedback h4 {
+  color: #667eea;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.summary-box-feedback p {
+  color: #333;
+  line-height: 1.5;
 }
 
 .summary-box {
@@ -236,5 +266,131 @@ textarea:disabled {
   .summary-input-section,
   .result-section {
     padding: 16px;
+  }
+
+  textarea {
+    width: 90%;
+  }
+
+  .char-count {
+    right: 6%;
+  }
+}
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  .news-game-container {
+    background-color: #121212;
+  }
+
+  .game-content {
+    color: #ffffff;
+  }
+
+  .game-title {
+    color: #ffffff;
+  }
+
+  .game-instructions {
+    background-color: #1E1E1E;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .game-instructions h2 {
+    color: #60A5FA;
+  }
+
+  .game-instructions li {
+    color: #E5E7EB;
+  }
+
+  .game-instructions li:before {
+    color: #60A5FA;
+  }
+
+  .news-article {
+    background-color: #1E1E1E;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .news-article h2 {
+    color: #ffffff;
+  }
+
+  .news-article p {
+    color: #E5E7EB;
+  }
+
+  .summary-input-section {
+    background-color: #1E1E1E;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .summary-input-section h3 {
+    color: #ffffff;
+  }
+
+  textarea {
+    background-color: #2C2C2C;
+    border-color: #404040;
+    color: #E5E7EB;
+  }
+
+  textarea:focus {
+    border-color: #60A5FA;
+  }
+
+  textarea:disabled {
+    background-color: #1E1E1E;
+    color: #9CA3AF;
+  }
+
+  .char-count {
+    color: #9CA3AF;
+  }
+
+  .result-section {
+    background-color: #1E1E1E;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .score-display h3 {
+    color: #ffffff;
+  }
+
+  .score {
+    color: #60A5FA;
+  }
+
+  .summary-box-feedback {
+    color: #ffffff;
+  }
+
+  .summary-box {
+    background-color: #2C2C2C;
+  }
+
+  .summary-box h4 {
+    color: #ffffff;
+  }
+
+  .summary-box p {
+    color: #E5E7EB;
+  }
+
+  /* 버튼 스타일 */
+  .submit-btn,
+  .home-btn {
+    background-color: #ffffff; 
+    color: #764ba2;
+  }
+
+  .submit-btn:hover,
+  .reset-btn:hover,
+  .home-btn:hover {
+    opacity: 0.9;
+  }
+
+  .reset-btn {
+    background: #764ba2
   }
 }
