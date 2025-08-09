@@ -96,7 +96,7 @@ function NewsGame() {
     ).length;
 
     // 길이 적절성 확인 (20~50자 이내가 적당)
-    const lengthScore = userSummary.length >= 20 && userSummary.length <= 50 ? 20 : 10;
+    const lengthScore = userSummary.length >= 20 && userSummary.length <= 50 ? 100 : 100;
 
     // 점수 계산
     score = (keywordCount / newsData.keywords.length) * 80 + lengthScore;
@@ -130,6 +130,14 @@ function NewsGame() {
       userSummary: userSummary,
       aiSummary: news.aiSummary
     });
+        
+    // 뱃지 체크 및 모달 표시
+    const badge = checkEarnedBadge(evaluation.score);
+    if (badge) {
+      setEarnedBadge(badge);
+      setShowBadgeModal(true);
+    }
+
     setIsSubmitted(true);
   };
 
@@ -138,12 +146,35 @@ function NewsGame() {
     setUserSummary('');
     setIsSubmitted(false);
     setResult(null);
+    setShowBadgeModal(false);
+    setEarnedBadge(null);
     fetchNews();
   };
 
   useEffect(() => {
     fetchNews();
   }, []);
+  // 뱃지 체크 함수 추가
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [earnedBadge, setEarnedBadge] = useState(null);
+
+  const checkEarnedBadge = (score) => {
+    // 뱃지 조건 설정
+    if (score >= 90) {
+      return {
+        name: "뉴스 마스터",
+        image: "/badges/summary-master.png",
+        description: "뛰어난 요약 능력을 보여주셨습니다!"
+      };
+    } else if (score >= 75) {
+      return {
+        name: "팩트체커",
+        image: "/badges/key-point.png",
+        description: "뉴스의 핵심을 잘 파악하셨습니다!"
+      };
+    }
+    return null;
+  };
 
   return (
     <>
@@ -227,6 +258,11 @@ function NewsGame() {
           )}
         </div>
       </div>
+      <BadgeModal
+        isOpen={showBadgeModal}
+        onClose={() => setShowBadgeModal(false)}
+        earnedBadge={earnedBadge}
+      />
       <Footer />
     </>
   );

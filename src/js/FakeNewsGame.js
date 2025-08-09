@@ -99,13 +99,13 @@ function FakeNewsGame() {
     const percentage = (score / totalQuestions) * 100;
     if (percentage === 100) {
       return {
-        name: "진실 수호자",
+        name: "공정한 눈",
         image: "/badges/truth-guardian.png",
         description: "모든 가짜 뉴스를 완벽하게 구별했습니다!"
       };
     } else if (percentage >= 75) {
       return {
-        name: "뉴스 탐정",
+        name: "정확도왕",
         image: "/badges/news-detective.png",
         description: "뛰어난 판단력으로 가짜 뉴스를 구별했습니다!"
       };
