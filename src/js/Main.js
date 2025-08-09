@@ -20,15 +20,6 @@ function Main() {
 
   const closeModal = () => setModalVisible(false);
 
-  const badges = [
-    { emoji: '🥇', label: '뉴스 마스터', gradient: 'yellow' , active:true},
-    { emoji: '🔍', label: '팩트체커', gradient: 'blue', active:true },
-    { emoji: '⚖️', label: '공정한 눈', gradient: 'purple', active:true },
-    { emoji: '🎯', label: '정확도왕', gradient: null, active:false },
-    { emoji: '🚀', label: '스피드런너', gradient: null, active:false },
-    { emoji: '👑', label: '문해력왕', gradient: null, active:false },
-  ];
-
   const rankings = [
     { rankEmoji: '🥇', name: '김문해', school: '서울고등학교', score: 2850, color: 'yellow' },
     { rankEmoji: '🥈', name: '이팩트', school: '부산중학교', score: 2720, color: 'gray' },
@@ -59,6 +50,7 @@ function Main() {
                 label: '뉴스 요약',
                 progress: 60,
                 current: 3,
+                max: 5,
                 color: 'blue',
               },
               {
@@ -66,6 +58,7 @@ function Main() {
                 label: '가짜뉴스 구별',
                 progress: 33,
                 current: 1,
+                max: 3,
                 color: 'red',
               },
             ].map((item, i) => (
@@ -73,7 +66,7 @@ function Main() {
                 <div className="progress-icon">{item.icon}</div>
                 <div className="progress-label">{item.label}</div>
                 <div className={`progress-value text-${item.color}`}>
-                  {item.current}
+                  {item.current} / {item.max}
                 </div>
                 <div className="progress-bar-bg">
                   <div
@@ -87,6 +80,7 @@ function Main() {
         </section>
 
         {/* Challenge Cards */}
+        <h3 className="section-title games-title">문해력 게임</h3>
         <div className="card-grid">
           {[
             {
@@ -119,21 +113,7 @@ function Main() {
         </div>
         
       <div className="badges-rankings-container">
-        {/* 내 뱃지 */}
-        <section className="badge-section card">
-          <h3 className="section-title">내 뱃지</h3>
-          <div className="badge-grid">
-            {badges.map((b, i) => (
-              <div
-                key={i}
-                className={`badge-box ${b.active ? `badge-gradient-${b.gradient}` : 'badge-inactive'}`}
-              >
-                <div className="badge-emoji">{b.emoji}</div>
-                <div className="badge-label">{b.label}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+       
 
         {/* 실시간 랭킹 */}
         <section className="ranking-section card">

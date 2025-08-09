@@ -1,4 +1,4 @@
-v
+aws s3 cp build s3://rise-09-s3 --recursive
 import React, { useState } from 'react';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 

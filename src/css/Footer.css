@@ -1,67 +1,107 @@
 .gradient-bg {
-    background: #4b4a51;
-}
-.footer-container{
-    padding: 0  50px 10px 50px; /* 상하좌우 여백 */
-    justify-content: center; /* 가로 중앙 정렬 */
-}
-.footer-grid {
-    display: flex;
-    gap:50px;
-    align-items: flex-start;
-    flex-wrap: wrap; /* 모바일 대응 */
-}
-.footer-link {
-    transition: all 0.3s ease;
-}
-
-.footer-link:hover {
-    color: #93c5fd;
-    transform: translateX(5px);
-}
-
-.footer-logo {
-    transition: transform 0.3s ease;
+  background:#445160;
+  width: 100%;
 }
 
 .footer-container {
-    animation: fadeIn 0.5s ease-in-out;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.footer-grid > div {
+  padding: 0;
+}
+
+.footer-grid h4 {
+  font-size: clamp(0.8rem, 3vw, 1rem);
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+  color: #dddddd;
+}
+
+.footer-grid p {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .footer-divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0;
 }
 
-.text-sm{
+.text-center {
+  text-align: center;
+}
+
+.text-xl{
+  text-align: left;
+}
+
+.text-lg{
+  text-align: left;
+}
+
+.text-sm {
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
     text-align: center;
-}
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  }
+
 }
 
-/* 반응형 디자인을 위한 미디어 쿼리 */
-@media (max-width: 768px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .footer-contact {
-        margin-top: 2rem;
-    }
+@media screen and (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    padding-left: 20px;
+  }
+
+  .footer-grid h4 {
+    font-size: 0.6rem;
+  }
+
+  .footer-grid p {
+    font-size: 0.5rem;
+  }
+
+  .text-sm{
+    font-size: 0.6rem;
+  }
 }
 
-/* 다크 모드 지원 */
+/* 가로 모드 대응 */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+
+  .footer-grid {
+    gap: 1rem;
+  }
+}
+
+/* 다크 모드 */
 @media (prefers-color-scheme: dark) {
-    .gradient-bg {
-        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-    }
+  .gradient-bg {
+  background:#445160;
+  }
+
+  .footer-grid p {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .footer-divider {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }

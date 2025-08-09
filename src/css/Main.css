@@ -54,7 +54,9 @@
   font-weight: 600;
   margin-bottom: 24px;
 }
-
+.games-title{
+  margin: 40px 16px 10px 20px;
+}
 /* Progress */
 .progress-grid {
   display: flex;
@@ -66,6 +68,7 @@
   flex: 1;
   min-width: 200px;
   text-align: center;
+  padding: 0px 24px 10px 24px;
 }
 
 .progress-icon {
@@ -206,44 +209,6 @@
   gap: 16px;
 }
 
-.badge-box {
-  text-align: center;
-  padding: 20px 0;
-  border-radius: 12px;
-  color: white;
-  cursor: default;
-  user-select: none;
-}
-
-.badge-emoji {
-  font-size: 28px;
-  margin-bottom: 6px;
-}
-
-.badge-label {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* Badge Colors */
-.badge-gradient-yellow {
-  background: linear-gradient(135deg, #facc15, #ca8a04);
-}
-
-.badge-gradient-blue {
-  background: linear-gradient(135deg, #60a5fa, #2563eb);
-}
-
-.badge-gradient-purple {
-  background: linear-gradient(135deg, #a78bfa, #7c3aed);
-}
-
-.badge-inactive {
-  background: #e5e7eb;
-  color: #6b7280;
-  opacity: 0.5;
-}
-
 /* Ranking List */
 .ranking-list {
   display: flex;
@@ -375,8 +340,7 @@
   .section-box {
     padding: 28px 36px;
     margin: 32px auto 32px;
-    max-width: 90%;
-    width: 100%;
+    max-width: 100%;
   }
 
   .challenge-card {
@@ -391,8 +355,11 @@
   
   .section-box {
     padding: 24px 28px;
-    margin: 24px auto;
-    max-width: 95%;
+    max-width: 100%;
+  }
+
+  .progress-box{
+    width: 50%;
   }
 
   .challenge-card {
@@ -400,12 +367,10 @@
   }
 
   .progress-grid {
-    flex-direction: column;
+    flex-direction: row;
+    max-width: auto;
   }
 
-  .progress-box {
-    min-width: 100%;
-  }
 
 }
 
@@ -416,19 +381,22 @@
   
   .section-box {
     padding: 16px;
+    margin: 12px 0;
     max-width: 100%;
-    margin: 24px;
-    width: auto;
   }
 
   .progress-grid {
     margin: 0;
-    gap: 16px;
+    width:100%;
+    flex-wrap: nowrap;
+    justify-content: center;  
   }
 
   .progress-box {
-    padding: 12px;
-    min-width: 100%;
+    padding: 1px;
+    width: 45%;
+    min-width: auto;
+    flex: 0 0 auto;
   }
 
   .challenge-card {
@@ -437,6 +405,13 @@
 
   .card-grid {
     max-width: 100%;
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
   }
 
+  .card-grid > * {
+    flex: 0 0 auto;
+    width: 280px;
+  }
 }

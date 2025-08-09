@@ -82,7 +82,7 @@ function Ranking() {
                                     </div>
                                 </div>
                                 <div className="score-info">
-                                    <div className="score">{item.score.toLocaleString()}점</div>
+                                    <div className="score-rank">{item.score.toLocaleString()}점</div>
                                 </div>
                             </div>
                         ))}

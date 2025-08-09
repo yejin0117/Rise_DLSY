@@ -116,7 +116,16 @@ textarea:disabled {
   font-size: 0.875rem;
 }
 
-.submit-btn, .reset-btn {
+.button-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.submit-btn,
+.reset-btn,
+.home-button {
   width: 100%;
   padding: 12px;
   border: none;
@@ -143,6 +152,14 @@ textarea:disabled {
 
 .reset-btn:hover {
   background-color: #4b5563;
+}
+
+.home-button {
+  background-color: #2196F3;
+}
+
+.home-button:hover {
+  opacity: 0.9;
 }
 
 .result-section {

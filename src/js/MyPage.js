@@ -4,6 +4,15 @@ import '../css/MyPage.css';
 import Header from './header';
 import Footer from './footer';
 
+  const badges = [
+    { emoji: '🥇', label: '뉴스 마스터', gradient: 'yellow' , active:true},
+    { emoji: '🔍', label: '팩트체커', gradient: 'blue', active:true },
+    { emoji: '⚖️', label: '공정한 눈', gradient: 'purple', active:true },
+    { emoji: '🎯', label: '정확도왕', gradient: null, active:false },
+    { emoji: '🚀', label: '스피드런너', gradient: null, active:false },
+    { emoji: '👑', label: '문해력왕', gradient: null, active:false },
+  ];
+
 const MyPage = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
@@ -41,13 +50,13 @@ const MyPage = () => {
         <div className="mypage-container">
             <div className="mypage-header">
                 <h1>마이 페이지</h1>
-                <div className="header-buttons">
-                    <button className="edit-profile-btn">프로필 수정</button>
-                </div>
             </div>
             
             <div className="profile-section">
-                <h2>프로필 정보</h2>
+                <div className="profile-header">
+                    <h2>프로필 정보</h2>
+                    <button className="edit-profile-btn">프로필 수정</button>
+                </div>
                 <div className="profile-info">
                     <div className="info-item">
                         <label>사용자 이름:</label>
@@ -81,9 +90,22 @@ const MyPage = () => {
                     </div>
                 </div>
             </div>
-
+            {/* 내 뱃지 */}
+            <div className="badge-section card">
+                <h2>내 뱃지</h2>
+                <div className="badge-grid">
+                    {badges.map((b, i) => (
+                    <div
+                        key={i}
+                        className={`badge-box ${b.active ? `badge-gradient-${b.gradient}` : 'badge-inactive'}`}
+                    >
+                        <div className="badge-emoji">{b.emoji}</div>
+                        <div className="badge-label">{b.label}</div>
+                    </div>
+                    ))}
+                </div>
+            </div>
             <div className="actions-section">
-                <button className="change-password-btn">비밀번호 변경</button>
                     <button className="logout-btn" onClick={handleLogout}>로그아웃</button>
             </div>
         </div>

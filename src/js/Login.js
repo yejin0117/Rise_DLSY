@@ -36,24 +36,6 @@ function Login({ t, onLoginSuccess }) {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const loginBoxRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (loginBoxRef.current) {
-        const scrollY = window.scrollY;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercentage = scrollY / maxScroll;
-        const oscillation = Math.sin(scrollPercentage * Math.PI * 2) * 20;
-        setScrollPosition(oscillation);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -179,10 +161,6 @@ function Login({ t, onLoginSuccess }) {
         <div 
           ref={loginBoxRef}
           className="login-box"
-          style={{
-            transform: `translate(-50%, calc(-50% + ${scrollPosition}px))`,
-            transition: 'transform 0.1s ease-out'
-          }}
         >
           <button type="button" className="close-button" onClick={handleBack}>
             <FaTimes />

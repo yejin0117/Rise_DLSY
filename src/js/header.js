@@ -52,8 +52,8 @@ function Header() {
                   <>
                     <Link to="/mypage" className="profile-icon login-status">👤</Link>
                   </>
-                ) : (
-                  <Link to="/login" className="profile-icon">👤</Link>
+                ) : (// /mapage->/login으로 수정해야함 잠깐 반응형 수정때문에 이렇게 함
+                  <Link to="/mypage" className="profile-icon">👤</Link>
                 )}
               </div>
             </div>

@@ -61,11 +61,11 @@
   font-size: 1.1rem;
 }
 
-.continue-button {
+.continue-button-badge {
   display: block;
   width: 100%;
   padding: 12px;
-  background-color: #4CAF50;
+  background-color: #764ba2;
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,8 +74,8 @@
   transition: background-color 0.3s;
 }
 
-.continue-button:hover {
-  background-color: #45a049;
+.continue-button-badge:hover {
+  opacity: 0.9;
 }
 
 @keyframes fadeIn {
@@ -111,5 +111,20 @@
 
   .badge-description {
     font-size: 1rem;
+  }
+}
+
+@media(prefers-color-scheme: dark){
+  .badge-modal{
+    background: #333;
+    color: #fff;
+  }
+
+  .badge-modal-header h2 {
+    color: #fff;
+  }
+  
+  .badge-description{
+    color:#fff;
   }
 }

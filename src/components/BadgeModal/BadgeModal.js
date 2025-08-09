@@ -32,7 +32,7 @@ const BadgeModal = ({ isOpen, onClose, earnedBadge }) => {
             <p>{earnedBadge.description}</p>
           </div>
 
-          <button className="continue-button" onClick={onClose}>
+          <button className="continue-button-badge" onClick={onClose}>
             계속하기
           </button>
         </div>

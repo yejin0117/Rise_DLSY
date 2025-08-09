@@ -1,11 +1,9 @@
 .wrapper {
-    height: 100vh;
+    min-height: calc(100vh - 120px); /* header와 footer 높이를 고려한 조정 */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    position: relative;
-    overflow: hidden;
 }
 
 .login-box {
@@ -15,12 +13,8 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-    z-index: 10;
+    margin: auto;
+    position: relative; /* 추가 */
 }
 
 .login-box form {
@@ -37,11 +31,13 @@
 }
 
 .login-box input {
+    width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #e2e8f0;
     border-radius: 0.5rem;
     font-size: 1rem;
     transition: border-color 0.2s;
+    box-sizing: border-box;
 }
 
 .login-box input:focus {
@@ -51,18 +47,18 @@
 
 .password-container {
     position: relative;
-    display: flex;
-    align-items: center;
+    width: 100%;
 }
 
 .password-container input {
-    flex: 1;
-    padding-right: 2.5rem; /* Add space for the eye button */
+    padding-right: 2.5rem;
 }
 
 .eye-button {
     position: absolute;
     right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     color: #64748b;
@@ -84,6 +80,9 @@
     border-radius: 0.5rem;
     font-weight: 500;
     transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    border: none;
+    cursor: pointer;
 }
 
 .primary-button:hover {
@@ -98,6 +97,9 @@
     border-radius: 0.5rem;
     font-weight: 500;
     transition: background 0.2s;
+    width: 100%;
+    border: none;
+    cursor: pointer;
 }
 
 .secondary-button:hover {
@@ -114,25 +116,56 @@
     cursor: pointer;
     padding: 0.5rem;
     transition: color 0.2s;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
 }
 
 .close-button:hover {
     color: #334155;
 }
 
-/* Add smooth scroll behavior to the page */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Add some padding to ensure the login box doesn't touch the edges */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 1rem;
+    }
+    
     .login-box {
-        margin: 1rem;
         padding: 1.5rem;
-        width: calc(100% - 2rem);
     }
 }
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding: 0;
+        min-height: calc(100vh - 100px); /* 모바일에서 header와 footer 높이 조정 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-box {
+        padding: 1.5rem;
+        width: 80%; /* 화면의 80% 너비 */
+        margin: 0 auto; /* 가운데 정렬 */
+        max-width: none; /* 최대 너비 제한 해제 */
+    }
+
+    .login-box input,
+    .password-container,
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+
+    .login-box h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+}
+
 .error-message {
     color: #ff0000;
     font-size: 14px;
