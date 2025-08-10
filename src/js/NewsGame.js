@@ -158,21 +158,19 @@ function NewsGame() {
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [earnedBadge, setEarnedBadge] = useState(null);
 
+  // 뱃지 체크 함수
   const checkEarnedBadge = (score) => {
-    // 뱃지 조건 설정
-    if (score >= 90) {
-      return {
-        name: "뉴스 마스터",
-        image: "/badges/summary-master.png",
-        description: "뛰어난 요약 능력을 보여주셨습니다!"
-      };
-    } else if (score >= 75) {
-      return {
-        name: "팩트체커",
-        image: "/badges/key-point.png",
-        description: "뉴스의 핵심을 잘 파악하셨습니다!"
-      };
+    const { checkBadgeAchievement, saveBadges } = require('../utils/badgeManager');
+    
+    // 뱃지 확인
+    const earnedBadges = checkBadgeAchievement('typing', score);
+    
+    // 새로운 뱃지가 있으면 저장하고 첫 번째 뱃지 반환
+    if (earnedBadges.length > 0) {
+      saveBadges(earnedBadges);
+      return earnedBadges[0]; // 가장 높은 등급의 뱃지 반환
     }
+    
     return null;
   };
 

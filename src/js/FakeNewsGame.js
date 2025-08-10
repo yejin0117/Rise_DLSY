@@ -3,24 +3,25 @@ import '../css/FakeNewsGame.css';
 import Header from './header';
 import Footer from './footer';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
+import { checkBadgeAchievement, saveBadges } from '../utils/badgeManager';
 
 // TODO: API 연동 후 제거
 const dummyNewsData = [
   {
-    article: "서울시는 내년부터 도시 전체 조명을 LED로 교체하는 사업을 시작한다. 이번 사업으로 전기 사용량이 30% 가량 절감될 것으로 예상된다. 시 관계자는 '5년에 걸쳐 단계적으로 진행할 예정'이라고 밝혔다.",
+    article: "t서울시는 내년부터 도시 전체 조명을 LED로 교체하는 사업을 시작한다. 이번 사업으로 전기 사용량이 30% 가량 절감될 것으로 예상된다. 시 관계자는 '5년에 걸쳐 단계적으로 진행할 예정'이라고 밝혔다.",
     isReal: true
   },
   {
-    article: "서울 도심에 인공 달 설치가 확정되었다. 지름 50m의 대형 반사판을 고도 500m에 설치하여 달빛보다 10배 밝은 조명을 제공할 예정이다. 이를 통해 야간 전기료를 90% 절감할 수 있을 것으로 기대된다.",
+    article: "f서울 도심에 인공 달 설치가 확정되었다. 지름 50m의 대형 반사판을 고도 500m에 설치하여 달빛보다 10배 밝은 조명을 제공할 예정이다. 이를 통해 야간 전기료를 90% 절감할 수 있을 것으로 기대된다.",
+    isReal: false
+  },
+  {
+    article: "t국내 연구진이 인공지능을 활용한 신약 후보물질 발굴 연구 성과를 발표했다. 기존 방식보다 개발 기간을 50% 단축할 수 있을 것으로 예상된다. 현재 전임상 실험이 진행 중이다.",
     isReal: true
   },
   {
-    article: "국내 연구진이 인공지능을 활용한 신약 후보물질 발굴 연구 성과를 발표했다. 기존 방식보다 개발 기간을 50% 단축할 수 있을 것으로 예상된다. 현재 전임상 실험이 진행 중이다.",
-    isReal: true
-  },
-  {
-    article: "과학자들이 물만으로 움직이는 자동차 엔진 개발에 성공했다고 발표했다. 이 기술이 상용화되면 연료비가 거의 들지 않을 것으로 예상된다. 내년 중 첫 시제품이 출시될 예정이다.",
-    isReal: true
+    article: "f과학자들이 물만으로 움직이는 자동차 엔진 개발에 성공했다고 발표했다. 이 기술이 상용화되면 연료비가 거의 들지 않을 것으로 예상된다. 내년 중 첫 시제품이 출시될 예정이다.",
+    isReal: false
   }
 ];
 
@@ -35,113 +36,11 @@ function FakeNewsGame() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 뉴스 기사 불러오기
   useEffect(() => {
-    // TODO: API 연동 후 수정
-    // const fetchNewsArticles = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const response = await fetch('/api/fake-news', {
-    //       method: 'GET',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //       }
-    //     });
-    //
-    //     if (!response.ok) throw new Error('뉴스 기사 로딩 실패');
-    //
-    //     const data = await response.json();
-    //     setNewsData(data);
-    //     setError(null);
-    //   } catch (error) {
-    //     console.error('뉴스 기사 로딩 중 오류:', error);
-    //     setError('뉴스 기사를 불러오는데 실패했습니다.');
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    //
-    // fetchNewsArticles();
-
     // 임시 로직
     setNewsData(dummyNewsData);
     setLoading(false);
   }, []);
-
-  // 뱃지 체크 함수 엔드포인트 수정필요
-  const checkEarnedBadge = async (score, totalQuestions) => {
-    // TODO: API 연동 후 수정
-    // try {
-    //   const response = await fetch('/api/check-badge', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //     },
-    //     body: JSON.stringify({
-    //       gameType: 'fake-news',
-    //       score,
-    //       totalQuestions,
-    //       userId: localStorage.getItem('userId')
-    //     })
-    //   });
-    //   
-    //   if (!response.ok) throw new Error('뱃지 확인 실패');
-    //   const badge = await response.json();
-    //   return badge;  // { name, image, description }
-    // } catch (error) {
-    //   console.error('뱃지 확인 중 오류:', error);
-    //   return null;
-    // }
-
-    // 임시 로직
-    const percentage = (score / totalQuestions) * 100;
-    if (percentage === 100) {
-      return {
-        name: "공정한 눈",
-        image: "/badges/truth-guardian.png",
-        description: "모든 가짜 뉴스를 완벽하게 구별했습니다!"
-      };
-    } else if (percentage >= 75) {
-      return {
-        name: "정확도왕",
-        image: "/badges/news-detective.png",
-        description: "뛰어난 판단력으로 가짜 뉴스를 구별했습니다!"
-      };
-    }
-    return null;
-  };
-
-  // 답변 제출 함수
-  const submitAnswer = async (isRealSelected, currentQuestion) => {
-    // TODO: API 연동 후 수정
-    // try {
-    //   const response = await fetch('/api/fake-news/submit', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //     },
-    //     body: JSON.stringify({
-    //       newsId: currentQuestion.id,
-    //       userAnswer: isRealSelected,
-    //       userId: localStorage.getItem('userId'),
-    //       timeSpent: calculateTimeSpent() // 답변 시간 측정 함수 필요
-    //     })
-    //   });
-    //
-    //   if (!response.ok) throw new Error('답변 제출 실패');
-    //   const result = await response.json();
-    //   return result.isCorrect;
-    // } catch (error) {
-    //   console.error('답변 제출 중 오류:', error);
-    //   return null;
-    // }
-
-    // 임시 로직
-    return isRealSelected === currentQuestion.isReal;
-  };
 
   const handleAnswer = async (isRealSelected) => {
     const currentQuestion = newsData[currentQuestionIndex];
@@ -162,25 +61,17 @@ function FakeNewsGame() {
 
     if (currentQuestionIndex === newsData.length - 1) {
       const finalScore = isCorrect ? score + 1 : score;
-      const badge = checkEarnedBadge(finalScore, newsData.length);
+      const percentage = (finalScore / newsData.length) * 100;
       
-      if (badge) {
-        // 기존 뱃지 불러오기
-        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
-        
-        // 중복 체크 후 새 뱃지 추가
-        if (!earnedBadges.some(b => b.name === badge.name)) {
-          earnedBadges.push({
-            ...badge,
-            active: true,
-            gradient: badge.name === "진실 수호자" ? "yellow" : "blue"
-          });
-          localStorage.setItem('earnedBadges', JSON.stringify(earnedBadges));
-        }
-        
-        setEarnedBadge(badge);
+      // 뱃지 확인
+      const earnedBadges = checkBadgeAchievement('fakeNews', percentage);
+      
+      if (earnedBadges.length > 0) {
+        saveBadges(earnedBadges);
+        setEarnedBadge(earnedBadges[0]); // 가장 높은 등급의 뱃지 표시
         setShowBadgeModal(true);
       }
+      
       setShowResult(true);
     } else {
       setCurrentQuestionIndex(prev => prev + 1);
@@ -219,20 +110,20 @@ function FakeNewsGame() {
                   {newsData[currentQuestionIndex].article}
                 </p>
               </div>
-                <div className="button-container-fake">
-                  <button
-                    className="real-button"
-                    onClick={() => handleAnswer(true)}
-                  >
-                    진짜뉴스
-                  </button>
-                  <button
-                    className="fake-button"
-                    onClick={() => handleAnswer(false)}
-                  >
-                    가짜뉴스
-                  </button>
-                </div>
+              <div className="button-container-fake">
+                <button
+                  className="real-button"
+                  onClick={() => handleAnswer(true)}
+                >
+                  진짜뉴스
+                </button>
+                <button
+                  className="fake-button"
+                  onClick={() => handleAnswer(false)}
+                >
+                  가짜뉴스
+                </button>
+              </div>
             </div>
           ) : (
             <div className="result-container">

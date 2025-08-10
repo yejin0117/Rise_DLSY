@@ -8,6 +8,7 @@ import MyPage from './js/MyPage';
 import NotFound from './pages/NotFound';
 import NewsGame from './js/NewsGame';
 import FakeNewsGame from './js/FakeNewsGame';
+import BadgeTest from './pages/BadgeTest';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,15 +47,32 @@ function App() {
               setCurrentUser={setCurrentUser}
               currentUser={currentUser}/>} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/ranking" element={<Ranking />} />
+        <Route path="/ranking" element={<Ranking
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />}/>
         <Route path="/mypage" element={
             <MyPage
               setIsLoggedIn={setIsLoggedIn}
               setCurrentUser={setCurrentUser}
               currentUser={currentUser}
             />}/>
-        <Route path="/news-game" element={<NewsGame />} />
-        <Route path="/fake-news-game" element={<FakeNewsGame />} />
+        <Route path="/news-game" element={<NewsGame
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />}/>
+        <Route path="/fake-news-game" element={<FakeNewsGame
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />}/>
+        <Route path="/badge-test" element={<BadgeTest
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

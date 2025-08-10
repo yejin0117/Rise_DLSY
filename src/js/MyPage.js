@@ -3,45 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import '../css/MyPage.css';
 import Header from './header';
 import Footer from './footer';
+import { loadBadges, BADGES } from '../utils/badgeManager';
 
-const defaultBadges = [
-    { 
-        name: "진실 수호자",
-        emoji: '🥇', 
-        label: '진실 수호자', 
-        description: "모든 가짜 뉴스를 완벽하게 구별했습니다!",
-        gradient: 'yellow',
-        active: false
-    },
-    { 
-        name: "뉴스 마스터",
-        emoji: '🔍', 
-        label: '뉴스 마스터', 
-        description: "뛰어난 판단력으로 가짜 뉴스를 구별했습니다!",
-        gradient: 'blue',
-        active: false
-    },
-    { 
-        name: "요약의 달인",
-        emoji: '⚖️', 
-        label: '요약의 달인', 
-        description: "뛰어난 요약 능력을 보여주셨습니다!",
-        gradient: 'purple',
-        active: false
-    },
-    { 
-        name: "핵심 포착왕",
-        emoji: '🎯', 
-        label: '핵심 포착왕', 
-        description: "뉴스의 핵심을 잘 파악하셨습니다!",
-        gradient: 'green',
-        active: false
-    },
-    {  name: "스피드런너", emoji: '🚀', label: '스피드런너', description: "뉴스의 핵심을 잘 파악하셨습니다!", gradient: null, active:false },
-    {  name: "문해력왕", emoji: '👑', label: '문해력왕', description: "뉴스의 핵심을 잘 파악하셨습니다!", gradient: null, active:false },
-];
-
-const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
+function MyPage({setIsLoggedIn, setCurrentUser, currentUser}) {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
         username: '',
@@ -51,11 +15,12 @@ const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
         totalGames: 0,
         bestScore: 0
     });
-    const [badges, setBadges] = useState(defaultBadges);
+    const [badges, setBadges] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editedData, setEditedData] = useState({});
 
     useEffect(() => {
+        // 사용자 데이터 로드
         const userDataStr = localStorage.getItem('currentUser');
         if (userDataStr) {
             const user = JSON.parse(userDataStr);
@@ -75,15 +40,22 @@ const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
         }
 
         // 획득한 뱃지 로드
-        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
-        const updatedBadges = defaultBadges.map(badge => ({
-            ...badge,
-            active: earnedBadges.some(earned => earned.name === badge.name)
-        }));
-        setBadges(updatedBadges);
+        const earnedBadges = loadBadges();
+        console.log('Loaded badges:', earnedBadges); // 디버깅용 로그
+        setBadges(earnedBadges);
     }, []);
 
-    // 로그아웃 처리
+    const getBadgeImage = (badge) => {
+        // BADGES 객체에서 해당 뱃지 찾기
+        const badgeDefinition = Object.values(BADGES).find(b => b.name === badge.name);
+        console.log('Badge:', badge.name); // 디버깅용 로그
+        console.log('Found definition:', badgeDefinition); // 디버깅용 로그
+        // 정의된 뱃지가 있으면 그 이미지 사용, 없으면 저장된 이미지 경로 사용
+        const image = badgeDefinition ? badgeDefinition.image : badge.image;
+        console.log('Using image:', image); // 디버깅용 로그
+        return image;
+    };
+
     const handleLogout = () => {
         setIsLoggedIn(false);
         setCurrentUser(null);
@@ -114,7 +86,6 @@ const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
     };
 
     const handleSubmit = () => {
-        // TODO: API 연동 후 수정
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         const newUserData = { ...currentUser, ...editedData };
         localStorage.setItem('currentUser', JSON.stringify(newUserData));
@@ -216,16 +187,25 @@ const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
             <div className="badge-section card">
                 <h2>내 뱃지</h2>
                 <div className="badge-grid">
-                    {badges.map((b, i) => (
-                    <div
-                        key={i}
-                        className={`badge-box ${b.active ? `badge-gradient-${b.gradient}` : 'badge-inactive'}`}
-                    >
-                        <div className="badge-emoji">{b.emoji}</div>
-                        <div className="badge-label">{b.label}</div>
-                        {b.active && <div className="badge-description">{b.description}</div>}
-                    </div>
-                    ))}
+                    {badges.map((badge, index) => {
+                        const badgeImage = getBadgeImage(badge);
+                        return (
+                            <div
+                                key={index}
+                                className={`badge-box ${badge.active ? 'badge-active' : 'badge-inactive'}`}
+                            >
+                                <div className="badge-content">
+                                    <div className="badge-image">
+                                        <img src={badgeImage} alt={badge.name} />
+                                    </div>
+                                    <div className="badge-label">{badge.name}</div>
+                                    <div className="badge-description">
+                                        <p>{badge.description}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
@@ -236,6 +216,6 @@ const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
         <Footer />
         </>
     );
-};
+}
 
 export default MyPage;
