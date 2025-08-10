@@ -145,15 +145,6 @@ function FakeNewsGame() {
 
   const handleAnswer = async (isRealSelected) => {
     const currentQuestion = newsData[currentQuestionIndex];
-    
-    // TODO: API 연동 후 수정
-    // const isCorrect = await submitAnswer(isRealSelected, currentQuestion);
-    // if (isCorrect === null) {
-    //   setError('답변 제출 중 오류가 발생했습니다.');
-    //   return;
-    // }
-    
-    // 임시 로직
     const isCorrect = isRealSelected === currentQuestion.isReal;
     
     const newAnswers = [
@@ -170,39 +161,23 @@ function FakeNewsGame() {
     if (isCorrect) setScore(prev => prev + 1);
 
     if (currentQuestionIndex === newsData.length - 1) {
-      // TODO: API 연동 후 수정 이건 
-      // try {
-      //   // 게임 결과 저장
-      //   await fetch('/api/save-game-result', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-      //     },
-      //     body: JSON.stringify({
-      //       gameType: 'fake-news',
-      //       score: isCorrect ? score + 1 : score,
-      //       totalQuestions: newsData.length,
-      //       answers: newAnswers,
-      //       userId: localStorage.getItem('userId'),
-      //       totalTime: calculateTotalTime() // 총 게임 시간 측정 함수 필요
-      //     })
-      //   });
-
-      //   // 뱃지 확인
-      //   const badge = await checkEarnedBadge(isCorrect ? score + 1 : score, newsData.length);
-      //   if (badge) {
-      //     setEarnedBadge(badge);
-      //     setShowBadgeModal(true);
-      //   }
-      // } catch (error) {
-      //   console.error('게임 결과 저장 중 오류:', error);
-      //   setError('게임 결과 저장 중 오류가 발생했습니다.');
-      // }
-
-      // 임시 로직
-      const badge = checkEarnedBadge(isCorrect ? score + 1 : score, newsData.length);
+      const finalScore = isCorrect ? score + 1 : score;
+      const badge = checkEarnedBadge(finalScore, newsData.length);
+      
       if (badge) {
+        // 기존 뱃지 불러오기
+        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+        
+        // 중복 체크 후 새 뱃지 추가
+        if (!earnedBadges.some(b => b.name === badge.name)) {
+          earnedBadges.push({
+            ...badge,
+            active: true,
+            gradient: badge.name === "진실 수호자" ? "yellow" : "blue"
+          });
+          localStorage.setItem('earnedBadges', JSON.stringify(earnedBadges));
+        }
+        
         setEarnedBadge(badge);
         setShowBadgeModal(true);
       }

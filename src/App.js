@@ -11,6 +11,7 @@ import FakeNewsGame from './js/FakeNewsGame';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     // 페이지 로드 시 로그인 상태 확인
@@ -35,11 +36,23 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-        <Route path="/login" element={<Login t={t} onLoginSuccess={handleLoginSuccess} />} />
+        <Route path="/" element={
+          <Main isLoggedIn={isLoggedIn} 
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}/>} />
+        <Route path="/login" element={
+          <Login t={t} onLoginSuccess={handleLoginSuccess} 
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/ranking" element={<Ranking />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage" element={
+            <MyPage
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
+            />}/>
         <Route path="/news-game" element={<NewsGame />} />
         <Route path="/fake-news-game" element={<FakeNewsGame />} />
         <Route path="*" element={<NotFound />} />

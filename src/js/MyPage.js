@@ -4,16 +4,44 @@ import '../css/MyPage.css';
 import Header from './header';
 import Footer from './footer';
 
-const badges = [
-    { emoji: '🥇', label: '뉴스 마스터', gradient: 'yellow' , active:true},
-    { emoji: '🔍', label: '팩트체커', gradient: 'blue', active:true },
-    { emoji: '⚖️', label: '공정한 눈', gradient: 'purple', active:true },
-    { emoji: '🎯', label: '정확도왕', gradient: null, active:false },
-    { emoji: '🚀', label: '스피드런너', gradient: null, active:false },
-    { emoji: '👑', label: '문해력왕', gradient: null, active:false },
+const defaultBadges = [
+    { 
+        name: "진실 수호자",
+        emoji: '🥇', 
+        label: '진실 수호자', 
+        description: "모든 가짜 뉴스를 완벽하게 구별했습니다!",
+        gradient: 'yellow',
+        active: false
+    },
+    { 
+        name: "뉴스 마스터",
+        emoji: '🔍', 
+        label: '뉴스 마스터', 
+        description: "뛰어난 판단력으로 가짜 뉴스를 구별했습니다!",
+        gradient: 'blue',
+        active: false
+    },
+    { 
+        name: "요약의 달인",
+        emoji: '⚖️', 
+        label: '요약의 달인', 
+        description: "뛰어난 요약 능력을 보여주셨습니다!",
+        gradient: 'purple',
+        active: false
+    },
+    { 
+        name: "핵심 포착왕",
+        emoji: '🎯', 
+        label: '핵심 포착왕', 
+        description: "뉴스의 핵심을 잘 파악하셨습니다!",
+        gradient: 'green',
+        active: false
+    },
+    {  name: "스피드런너", emoji: '🚀', label: '스피드런너', description: "뉴스의 핵심을 잘 파악하셨습니다!", gradient: null, active:false },
+    {  name: "문해력왕", emoji: '👑', label: '문해력왕', description: "뉴스의 핵심을 잘 파악하셨습니다!", gradient: null, active:false },
 ];
 
-const MyPage = () => {
+const MyPage = ({setIsLoggedIn, setCurrentUser, currentUser}) => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
         username: '',
@@ -23,6 +51,7 @@ const MyPage = () => {
         totalGames: 0,
         bestScore: 0
     });
+    const [badges, setBadges] = useState(defaultBadges);
     const [isEditing, setIsEditing] = useState(false);
     const [editedData, setEditedData] = useState({});
 
@@ -44,9 +73,20 @@ const MyPage = () => {
                 school: user.school
             });
         }
+
+        // 획득한 뱃지 로드
+        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+        const updatedBadges = defaultBadges.map(badge => ({
+            ...badge,
+            active: earnedBadges.some(earned => earned.name === badge.name)
+        }));
+        setBadges(updatedBadges);
     }, []);
 
+    // 로그아웃 처리
     const handleLogout = () => {
+        setIsLoggedIn(false);
+        setCurrentUser(null);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('currentUser');
         navigate('/');
@@ -183,6 +223,7 @@ const MyPage = () => {
                     >
                         <div className="badge-emoji">{b.emoji}</div>
                         <div className="badge-label">{b.label}</div>
+                        {b.active && <div className="badge-description">{b.description}</div>}
                     </div>
                     ))}
                 </div>

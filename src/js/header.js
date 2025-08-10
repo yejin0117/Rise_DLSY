@@ -32,11 +32,11 @@ function Header() {
     <>
       {/* Header */}
       <header className="header">
-        <div className="container">
+        <div className="container-header">
           <div className="header-flex">
             <div className="logo-section" onClick={() => navigate('/')}>
-              <span className="logo-icon">📚</span>
-              <h1 className="title">디지털 문해력 챌린지</h1>
+              <span className="logo-icon">NewsLit</span>
+              <h1 className="title-header">디지털 문해력 챌린지</h1>
             </div>
             <div className="user-info-header">
               <div className="info-box">

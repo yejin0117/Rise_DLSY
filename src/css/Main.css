@@ -29,14 +29,12 @@
 .container {
   max-width: 1200px;
   margin: auto;
-  padding: 100px 48px 0;  /* 24px에서 48px로 증가 */
   border-top: 1px solid transparent; 
 }
 
 /* Main */
 .main-content {
-  padding: 40px;
-  padding-top: 100px;
+  padding: 0px;
 }
 
 .section-box {

@@ -1,14 +1,14 @@
 .header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: clamp(0.5rem, 2vw, 1rem) 0;
+  padding: clamp(0.2rem, 2vw, 0.3rem) 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
-.container {
+.container-header {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -24,20 +24,21 @@
 }
 
 .logo-section {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
   cursor: pointer;
 }
 
 .logo-icon {
-  font-size: clamp(1.2rem, 4vw, 2rem);
+  margin:0 auto;
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
-.title {
-  font-size: clamp(0.9rem, 3vw, 1.5rem);
+.title-header {
+  font-size: clamp(0.6rem, 3vw, 0.8rem);
   font-weight: bold;
   white-space: nowrap;
+  margin-top:-5px;;
 }
 
 .user-info-header {
@@ -109,7 +110,10 @@
 
 /* 모바일 */
 @media screen and (max-width: 480px) {
-  .container {
+  .header{
+    padding: 0.2rem;
+  }
+  .container-header {
     padding: 0 0.5rem;
   }
 
@@ -117,12 +121,17 @@
     gap: 0.3rem;
   }
 
-  .logo-icon {
-    font-size: 1.2rem;
+  .logo-section {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .title {
-    font-size: 1rem;
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+
+  .title-header {
+    font-size: 0.6rem;
   }
 
     
@@ -132,7 +141,7 @@
   }
 
   .info-box {
-    padding: 0.2rem;
+    padding: 0.5rem;
     min-width: 35px;
   }
 
@@ -145,7 +154,7 @@
   }
 
   .profile-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   .login-status::after {

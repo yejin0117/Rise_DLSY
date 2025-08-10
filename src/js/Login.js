@@ -29,7 +29,7 @@ const DUMMY_USERS = [
   }
 ];
 
-function Login({ t, onLoginSuccess }) {
+function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

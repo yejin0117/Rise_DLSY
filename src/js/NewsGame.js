@@ -99,7 +99,7 @@ function NewsGame() {
     const lengthScore = userSummary.length >= 20 && userSummary.length <= 50 ? 100 : 100;
 
     // 점수 계산
-    score = (keywordCount / newsData.keywords.length) * 80 + lengthScore;
+    score = lengthScore;
     score = Math.round(score);
 
     // 피드백 생성

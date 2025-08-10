@@ -5,21 +5,12 @@ import '../css/Main.css';
 import Header from './header';
 import Footer from './footer';
 
-function Main() {
+function Main({isLoggedIn, setCurrentUser, currentUser}) {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
-
-  const openModal = (title, content) => {
-    setModalTitle(title);
-    setModalContent(content);
-    setModalVisible(true);
-  };
-
-  const closeModal = () => setModalVisible(false);
-
+  
   const rankings = [
     { rankEmoji: '🥇', name: '김문해', school: '서울고등학교', score: 2850, color: 'yellow' },
     { rankEmoji: '🥈', name: '이팩트', school: '부산중학교', score: 2720, color: 'gray' },
@@ -145,21 +136,6 @@ function Main() {
           </div>
         </section>
       </div>
-
-        {/* Modal */}
-        {modalVisible && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <div className="modal-header">
-                <h2>{modalTitle}</h2>
-                <button className="modal-close" onClick={closeModal}>
-                  ×
-                </button>
-              </div>
-              <div className="modal-body">{modalContent}</div>
-            </div>
-          </div>
-        )}
       </main>
       <Footer/>
     </div>
