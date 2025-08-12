@@ -14,6 +14,8 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
   const [rankings, setRankings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newsGameCount, setNewsGameCount] = useState(0);
+  const [fakeNewsGameCount, setFakeNewsGameCount] = useState(0);
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -31,7 +33,16 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
       }
     };
 
+    // 로컬스토리지에서 게임 횟수 불러오기
+    const loadGameCounts = () => {
+      const newsCount = parseInt(localStorage.getItem('newsGameCount') || '0');
+      const fakeNewsCount = parseInt(localStorage.getItem('fakeNewsGameCount') || '0');
+      setNewsGameCount(newsCount);
+      setFakeNewsGameCount(fakeNewsCount);
+    };
+
     fetchRankings();
+    loadGameCounts();
   }, []);
 
   const handleStartGame = (gameType) => {
@@ -78,16 +89,16 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
                   {
                     icon: '📰',
                     label: '뉴스 요약',
-                    progress: 60,
-                    current: 3,
+                    progress: Math.min((newsGameCount / 5) * 100, 100),
+                    current: newsGameCount,
                     max: 5,
                     color: 'blue',
                   },
                   {
                     icon: '🔍',
                     label: '가짜뉴스 구별',
-                    progress: 33,
-                    current: 1,
+                    progress: Math.min((fakeNewsGameCount / 5) * 100, 100),
+                    current: fakeNewsGameCount,
                     max: 3,
                     color: 'red',
                   },

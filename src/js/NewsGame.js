@@ -47,6 +47,10 @@ function NewsGame() {
     const data = await response.json();
     setResult(data);
 
+    // 게임 횟수 증가 (로컬스토리지에 저장)
+    const currentCount = parseInt(localStorage.getItem('newsGameCount') || '0');
+    localStorage.setItem('newsGameCount', (currentCount + 1).toString());
+
     // 뱃지 체크
     const badge = checkEarnedBadge(data.score);
     if (badge) {

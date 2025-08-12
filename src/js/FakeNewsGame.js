@@ -137,6 +137,11 @@ function FakeNewsGame() {
 
     if (currentQuestionIndex === newsData.length - 1) {
       const finalScore = isCorrect ? score + 1 : score;
+      
+      // 게임 횟수 증가 (로컬스토리지에 저장)
+      const currentCount = parseInt(localStorage.getItem('fakeNewsGameCount') || '0');
+      localStorage.setItem('fakeNewsGameCount', (currentCount + 1).toString());
+      
       const badge = await checkEarnedBadge(finalScore, newsData.length);
       
       if (badge) {
