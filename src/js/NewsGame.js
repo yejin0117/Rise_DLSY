@@ -3,10 +3,12 @@ import '../css/NewsGame.css';
 import Header from './header';
 import Footer from './footer';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
+import { useNavigate } from 'react-router-dom';
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function NewsGame() {
+  const navigate = useNavigate();
   const [news, setNews] = useState(null);
   const [userSummary, setUserSummary] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -43,10 +45,20 @@ function NewsGame() {
     return;
   }
 
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+      return;
+    }
+
   try {
     const response = await fetch(`${SERVER_API}/api/compare-random/submit`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
       body: JSON.stringify({
         newsId: news.id,
         userSummary: userSummary,
@@ -76,66 +88,14 @@ function NewsGame() {
   }
 };
 
-  // 요약 평가 함수
-  const evaluateSummary = (userSummary, newsData) => {
-    let score = 0;
-    let feedback = "";
-
-    // 키워드 포함 여부 확인
-    const keywordCount = newsData.keywords.filter(keyword => 
-      userSummary.toLowerCase().includes(keyword.toLowerCase())
-    ).length;
-
-    // 길이 적절성 확인 (20~50자 이내가 적당)
-    const lengthScore = userSummary.length >= 20 && userSummary.length <= 50 ? 100 : 100;
-
-    // 점수 계산
-    score = lengthScore;
-    score = Math.round(score);
-
-    // 피드백 생성
-    if (score >= 90) {
-      feedback = "훌륭한 요약입니다! 핵심 키워드를 잘 포함했습니다.";
-    } else if (score >= 70) {
-      feedback = "좋은 요약입니다. 조금 더 핵심 키워드를 포함해보세요.";
-    } else if (score >= 50) {
-      feedback = "무난한 요약입니다. 더 많은 핵심 내용을 담아보세요.";
-    } else {
-      feedback = "다시 한번 뉴스의 핵심 내용을 파악해보세요.";
-    }
-
-    return { score, feedback };
-  };
-
   // 다시하기
   const handleReset = () => {
-    setUserSummary('');
-    setIsSubmitted(false);
-    setResult(null);
-    setShowBadgeModal(false);
-    setEarnedBadge(null);
-    setError(null);
-    
-    // 새로운 뉴스 불러오기
-    const fetchNews = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${SERVER_API}/api/compare-random`);
-        if (!response.ok) throw new Error('뉴스 불러오기 실패');
-        const data = await response.json();
-        setNews(data);
-      } catch (error) {
-        setError('뉴스를 불러오는 중 문제가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNews();
-  };
+      window.location.reload();
+  }
 
   const checkEarnedBadge = (score) => {
     // 뱃지 조건 설정
-    if (score >= 90) {
+    if (score >= 80) {
       return {
         name: "뉴스 마스터",
         image: "/badges/summary-master.png",
@@ -182,7 +142,6 @@ function NewsGame() {
 
   return (
     <>
-      <Header />
       <div className="news-game-container">
         <div className="game-content">
           <h1 className="game-title">뉴스 한 줄 요약</h1>
@@ -267,7 +226,6 @@ function NewsGame() {
         onClose={() => setShowBadgeModal(false)}
         earnedBadge={earnedBadge}
       />
-      <Footer />
     </>
   );
 }

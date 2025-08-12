@@ -80,7 +80,6 @@ function Main({isLoggedIn, currentUser}) {
 
   return (
       <>
-        <Header/>
         <div className="body-bg">
           {/* Main Content */}
           <main className="container main-content">
@@ -163,17 +162,14 @@ function Main({isLoggedIn, currentUser}) {
               <section className="ranking-section card">
                 <h3 className="section-title">실시간 랭킹</h3>
                 <div className="ranking-list">
-                  {rankings.map((r, i) => (
-                      <div
-                          key={i}
-                          className={`ranking-item-main  ranking-bg-${getRankColor(r.rank)}`}
-                      >
-                        <div className="ranking-left">
-                          <span className="ranking-emoji">{getRankEmoji(r.rank)}</span>
-                          <div>
-                            <div className="ranking-name">{r.username}</div>
-                            <div className="ranking-school">{r.school}</div>
-                          </div>
+                    {rankings.map((r, i) => (
+                        <div key={i} className={`ranking-item-main ranking-bg-${getRankColor(r.rank)}`}>
+                          <div className="ranking-left">
+                            <span className="ranking-emoji">{getRankEmoji(r.rank)}</span>
+                            <div>
+                              <div className="ranking-name">{r.username}</div>
+                              <div className="ranking-school">{r.school}</div>
+                            </div>
                         </div>
                         <div className="ranking-score">{r.score.toLocaleString()}점</div>
                       </div>
@@ -190,7 +186,6 @@ function Main({isLoggedIn, currentUser}) {
               </section>
             </div>
           </main>
-          <Footer/>
         </div>
       </>
   );
