@@ -5,30 +5,6 @@ import Footer from './footer';
 import { FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-// 더미 사용자 데이터
-const DUMMY_USERS = [
-  {
-    id: 'test1',
-    password: 'test123',
-    username: '테스트유저1',
-    email: 'test1@test.com',
-    school:'안양고등학교',
-    joinDate: '2024-07-01',
-    totalGames: 15,
-    bestScore: 95
-  },
-  {
-    id: 'admin',
-    password: 'admin123',
-    username: '관리자',
-    email: 'admin@example.com',
-    school:'안양고등학교',
-    joinDate: '2024-06-01',
-    totalGames: 30,
-    bestScore: 100
-  }
-];
-
 function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -37,92 +13,56 @@ function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
   const [errorMessage, setErrorMessage] = useState('');
   const loginBoxRef = useRef(null);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
+  // ✅ 사용자의 프로필 정보를 가져오는 함수
+  const fetchUserProfile = async (token) => {
+    try {
+      const profileResponse = await fetch('api/users/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (!email || !password) {
-      setErrorMessage('이메일과 비밀번호를 모두 입력해주세요.');
-      return;
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+        localStorage.setItem('currentUser', JSON.stringify(profileData));
+        setCurrentUser(profileData);
+        return profileData; // 프로필 데이터 반환
+      } else {
+        console.error('Failed to fetch user profile.');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('authToken');
+        setIsLoggedIn(false);
+        return null;
+      }
+    } catch (err) {
+      console.error('Profile fetch error:', err);
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('authToken');
+      setIsLoggedIn(false);
+      return null;
+    }
+  };
+
+  // ✅ 10분(600000ms)마다 프로필 정보를 업데이트하는 useEffect
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    let interval;
+
+    if (token) {
+      // 컴포넌트 마운트 시 최초 1회 즉시 조회
+      fetchUserProfile(token);
+
+      // 10분마다 프로필 정보 갱신
+      interval = setInterval(() => {
+        fetchUserProfile(token);
+      }, 600000); // 10분 = 600,000ms
     }
 
-    // 더미 데이터로 로그인 처리 (임시)
-    const user = DUMMY_USERS.find(
-      user => user.email === email && user.password === password
-    );
-
-    if (user) {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', JSON.stringify({
-        username: user.username,
-        email: user.email,
-        school: user.school,
-        joinDate: user.joinDate,
-        totalGames: user.totalGames,
-        bestScore: user.bestScore
-      }));
-      localStorage.setItem('authToken', 'dummy-token');
-      onLoginSuccess();
-      navigate('/');
-    } else {
-      setErrorMessage('이메일 또는 비밀번호가 일치하지 않습니다.');
-    }
-
-    // TODO: API 연동 후 수정
-    // try {
-    //   const response = await fetch('/api/auth/login', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ email, password }),
-    //   });
-
-    //   const data = await response.json();
-
-    //   if (response.ok) {
-    //     localStorage.setItem('isLoggedIn', 'true');
-    //     if (data.user) {
-    //       localStorage.setItem('currentUser', JSON.stringify(data.user));
-    //     }
-    //     localStorage.setItem('authToken', data.token);
-    //     onLoginSuccess();
-    //     navigate('/');
-    //   } else {
-    //     setErrorMessage(data.message || '로그인 중 오류가 발생했습니다.');
-    //   }
-    // } catch (err) {
-    //   console.error('로그인 오류:', err);
-    //   setErrorMessage('서버 연결 중 오류가 발생했습니다.');
-    // }
-  };
-
-  const handleBack = () => {
-    navigate('/');
-  };
-
-  const handleSignUp = () => {
-    navigate('/signup');
-  };
-
-  // DB가 없어 슬픈 프론트를 위한 더미데이터 사용 로그인
-  /*
-    // 더미 데이터로 로그인 처리 (개발 완료 후 삭제)
-  const handleDummyLogin = () => {
-    const user = DUMMY_USERS.find(
-      user => user.email === email && user.password === password
-    );
-
-    if (user) {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      localStorage.setItem('authToken', 'dummy-token');
-      onLoginSuccess();
-      navigate('/');
-      return true;
-    }
-    return false;
-  };
+    // 컴포넌트 언마운트 시 인터벌 정리
+    return () => clearInterval(interval);
+  }, []); // 빈 배열은 컴포넌트가 처음 마운트될 때만 실행
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -130,17 +70,11 @@ function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
 
     if (!email || !password) {
       setErrorMessage('이메일과 비밀번호를 모두 입력해주세요.');
-      return;
-    }
-
-    // 더미 데이터로 로그인 시도 (개발 완료 후 이 부분 삭제)
-    if (USE_DUMMY_DATA && handleDummyLogin()) {
       return;
     }
 
     try {
-      // API 호출 로직
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch('api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,10 +86,11 @@ function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
 
       if (response.ok) {
         localStorage.setItem('isLoggedIn', 'true');
-        if (data.user) {
-          localStorage.setItem('currentUser', JSON.stringify(data.user));
-        }
         localStorage.setItem('authToken', data.token);
+
+        // 로그인 성공 후 프로필 정보 즉시 가져오기
+        await fetchUserProfile(data.token);
+
         onLoginSuccess();
         navigate('/');
       } else {
@@ -163,61 +98,64 @@ function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
       }
     } catch (err) {
       console.error('로그인 오류:', err);
-      if (USE_DUMMY_DATA) {
-        setErrorMessage('이메일 또는 비밀번호가 일치하지 않습니다.');
-      } else {
-        setErrorMessage('서버 연결 중 오류가 발생했습니다.');
-      }
+      setErrorMessage('서버 연결 중 오류가 발생했습니다.');
     }
   };
-    */
+
+  const handleBack = () => {
+    navigate('/');
+  };
+
+  const handleSignUp = () => {
+    navigate('/signup');
+  };
 
   return (
-    <>
-      <Header/>
-      <div className="wrapper">
-        <div 
-          ref={loginBoxRef}
-          className="login-box"
-        >
-          <button type="button" className="close-button" onClick={handleBack}>
-            <FaTimes />
-          </button>
-          <form onSubmit={handleLogin}>
-            <h2>{t.title}</h2>
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-            <input
-              type="text"
-              placeholder={t.email}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <div className="password-container">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder={t.password}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="eye-button"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
-            <button type="submit" className="primary-button">{t.login}</button>
-            <button type="button" className="secondary-button" onClick={handleSignUp}>
-              {t.signup}
+      <>
+        <Header />
+        <div className="wrapper">
+          <div
+              ref={loginBoxRef}
+              className="login-box"
+          >
+            <button type="button" className="close-button" onClick={handleBack}>
+              <FaTimes />
             </button>
-          </form>
+            <form onSubmit={handleLogin}>
+              <h2>{t.title}</h2>
+              {errorMessage && <div className="error-message">{errorMessage}</div>}
+              <input
+                  type="text"
+                  placeholder={t.email}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+              />
+              <div className="password-container">
+                <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={t.password}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button
+                    type="button"
+                    className="eye-button"
+                    onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
+              <button type="submit" className="primary-button">{t.login}</button>
+              <button type="button" className="secondary-button" onClick={handleSignUp}>
+                {t.signup}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-      <Footer/>
-    </>
+        <Footer />
+      </>
   );
 }
 
