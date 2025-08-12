@@ -16,6 +16,7 @@ function FakeNewsGame() {
   const [newsData, setNewsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedArticle, setExpandedArticle] = useState(null);
 
   // 뉴스 기사 불러오기
   useEffect(() => {
@@ -90,7 +91,7 @@ function FakeNewsGame() {
   };
 
   // 답변 제출 함수
-  const submitAnswer = async (isRealSelected, currentQuestion) => {
+  const submitAnswer = async (selectedArticleId, currentQuestionPair) => {
     try {
       const response = await fetch(`${SERVER_API}/api/fake-news/submit`, {
         method: 'POST',
@@ -99,8 +100,8 @@ function FakeNewsGame() {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
-          newsId: currentQuestion.id,
-          userAnswer: isRealSelected,
+          questionId: currentQuestionPair.id,
+          selectedArticleId: selectedArticleId,
           userId: localStorage.getItem('userId'),
           //timeSpent: calculateTimeSpent() // 답변 시간 측정 함수 필요
         })
@@ -113,21 +114,20 @@ function FakeNewsGame() {
       console.error('답변 제출 중 오류:', error);
       return null;
     }
-
-    // 임시 로직
-    return isRealSelected === currentQuestion.isReal;
   };
 
-  const handleAnswer = async (isRealSelected) => {
-    const currentQuestion = newsData[currentQuestionIndex];
-    const isCorrect = isRealSelected === currentQuestion.isReal;
+  const handleAnswer = async (selectedArticleId) => {
+    const currentQuestionPair = newsData[currentQuestionIndex];
+    const selectedArticle = currentQuestionPair.articles.find(article => article.id === selectedArticleId);
+    const correctArticle = currentQuestionPair.articles.find(article => article.isReal);
+    const isCorrect = selectedArticleId === correctArticle.id;
     
     const newAnswers = [
       ...answers,
       {
-        article: currentQuestion.article,
-        selectedAnswer: isRealSelected ? "진짜" : "가짜",
-        correctAnswer: currentQuestion.isReal ? "진짜" : "가짜",
+        questionPair: currentQuestionPair,
+        selectedArticle: selectedArticle,
+        correctArticle: correctArticle,
         isCorrect
       }
     ];
@@ -137,7 +137,7 @@ function FakeNewsGame() {
 
     if (currentQuestionIndex === newsData.length - 1) {
       const finalScore = isCorrect ? score + 1 : score;
-      const badge = checkEarnedBadge(finalScore, newsData.length);
+      const badge = await checkEarnedBadge(finalScore, newsData.length);
       
       if (badge) {
         // 기존 뱃지 불러오기
@@ -148,7 +148,7 @@ function FakeNewsGame() {
           earnedBadges.push({
             ...badge,
             active: true,
-            gradient: badge.name === "진실 수호자" ? "yellow" : "blue"
+            gradient: badge.name === "공정한 눈" ? "yellow" : "blue"
           });
           localStorage.setItem('earnedBadges', JSON.stringify(earnedBadges));
         }
@@ -162,6 +162,16 @@ function FakeNewsGame() {
     }
   };
 
+  // 기사 확대 모달 열기
+  const openExpandedView = (article) => {
+    setExpandedArticle(article);
+  };
+
+  // 기사 확대 모달 닫기
+  const closeExpandedView = () => {
+    setExpandedArticle(null);
+  };
+
   const resetGame = () => {
     setScore(0);
     setAnswers([]);
@@ -170,6 +180,7 @@ function FakeNewsGame() {
     setShowBadgeModal(false);
     setEarnedBadge(null);
     setError(null);
+    setExpandedArticle(null);
   };
 
   if (loading) return <div className="loading">뉴스를 불러오는 중입니다...</div>;
@@ -184,30 +195,32 @@ function FakeNewsGame() {
           <h1 className="game-title-fake">가짜 뉴스 판별하기</h1>
           
           {!showResult ? (
-            <div className="news-card-fake">
+            <div className="news-comparison-container">
               <p className="question-counter">
                 문제 {currentQuestionIndex + 1} / {newsData.length}
               </p>
-              <div className="news-article-fake">
-                <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
-                <p className="article-content-fake">
-                  {newsData[currentQuestionIndex].article}
-                </p>
+              <h2 className="game-instruction">어떤 뉴스가 진실인지 선택하세요</h2>
+              <p className="game-hint">기사를 클릭하면 자세히 볼 수 있습니다</p>
+              
+              <div className="news-articles-container">
+                {newsData[currentQuestionIndex].articles.map((article, index) => (
+                  <div key={article.id} className="news-article-card">
+                    <div className="article-preview" onClick={() => openExpandedView(article)}>
+                      <h3 className="article-title">{article.title}</h3>
+                      <p className="article-preview-content">
+                        {article.content.substring(0, 150)}...
+                      </p>
+                      <span className="expand-hint">클릭하여 전체 보기</span>
+                    </div>
+                    <button
+                      className="select-article-button"
+                      onClick={() => handleAnswer(article.id)}
+                    >
+                      이 뉴스가 진실입니다
+                    </button>
+                  </div>
+                ))}
               </div>
-                <div className="button-container-fake">
-                  <button
-                    className="real-button"
-                    onClick={() => handleAnswer(true)}
-                  >
-                    진짜뉴스
-                  </button>
-                  <button
-                    className="fake-button"
-                    onClick={() => handleAnswer(false)}
-                  >
-                    가짜뉴스
-                  </button>
-                </div>
             </div>
           ) : (
             <div className="result-container">
@@ -229,9 +242,18 @@ function FakeNewsGame() {
                     className={`result-item ${answer.isCorrect ? 'correct' : 'incorrect'}`}
                   >
                     <h3>문제 {index + 1}</h3>
-                    <p className="article-content-fake">{answer.article}</p>
-                    <p><strong>당신의 판단:</strong> {answer.selectedAnswer}</p>
-                    <p><strong>정답:</strong> {answer.correctAnswer}</p>
+                    <div className="result-articles">
+                      <div className="selected-article">
+                        <h4>선택한 기사:</h4>
+                        <p className="article-title">{answer.selectedArticle.title}</p>
+                        <p className="article-content-fake">{answer.selectedArticle.content}</p>
+                      </div>
+                      <div className="correct-article">
+                        <h4>정답 기사:</h4>
+                        <p className="article-title">{answer.correctArticle.title}</p>
+                        <p className="article-content-fake">{answer.correctArticle.content}</p>
+                      </div>
+                    </div>
                     <p>
                       <strong>판별 결과:</strong> {answer.isCorrect ? "정답입니다!" : "오답입니다."}
                     </p>
@@ -251,6 +273,28 @@ function FakeNewsGame() {
           )}
         </div>
       </div>
+
+      {/* 기사 확대 모달 */}
+      {expandedArticle && (
+        <div className="expanded-article-modal" onClick={closeExpandedView}>
+          <div className="expanded-article-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeExpandedView}>×</button>
+            <h2 className="expanded-title">{expandedArticle.title}</h2>
+            <div className="expanded-content">
+              {expandedArticle.content}
+            </div>
+            <button
+              className="select-from-modal-button"
+              onClick={() => {
+                closeExpandedView();
+                handleAnswer(expandedArticle.id);
+              }}
+            >
+              이 뉴스가 진실입니다
+            </button>
+          </div>
+        </div>
+      )}
 
       <BadgeModal
         isOpen={showBadgeModal}

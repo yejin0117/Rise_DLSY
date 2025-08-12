@@ -15,7 +15,7 @@ function NewsGame() {
   // ✅ GET: 뉴스 불러오기
   const fetchNews = async () => {
     try {
-      const response = await fetch(`{SERVER_API}/api/compare-random`);
+      const response = await fetch(`${SERVER_API}/api/compare-random`);
       if (!response.ok) throw new Error('뉴스 불러오기 실패');
 
       const data = await response.json();
@@ -27,41 +27,40 @@ function NewsGame() {
 
   // ✅ POST: 요약 제출
   const handleSubmit = async () => {
-    if (!userSummary.trim()) {
-      alert('요약문을 입력해주세요.');
-      return;
-    }
+  if (!userSummary.trim()) {
+    alert('요약문을 입력해주세요.');
+    return;
+  }
 
-    try {
-      const response = await fetch('/api/compare-random/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          newsId: news.id,
-          userSummary: userSummary,
-        }),
-      });
+  try {
+    const response = await fetch(`${SERVER_API}/api/compare-random/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        newsId: news.id,
+        userSummary: userSummary,
+      }),
+    });
 
-      if (!response.ok) throw new Error('제출 실패');
+    if (!response.ok) throw new Error('제출 실패');
 
-      const data = await response.json();
-      setResult(data);
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error('제출 오류:', error);
-      alert('제출 중 오류가 발생했습니다.');
-    }
-        
-    // 뱃지 체크 및 모달 표시
-    const badge = checkEarnedBadge(evaluation.score);
+    const data = await response.json();
+    setResult(data);
+
+    // 뱃지 체크
+    const badge = checkEarnedBadge(data.score);
     if (badge) {
       setEarnedBadge(badge);
       setShowBadgeModal(true);
     }
 
-  };
+    setIsSubmitted(true);
+  } catch (error) {
+    console.error('제출 오류:', error);
+    alert('제출 중 오류가 발생했습니다.');
+  }
+};
+
 
 
   // 요약 평가 함수
@@ -93,31 +92,6 @@ function NewsGame() {
     }
 
     return { score, feedback };
-  };
-
-  // 요약 제출 처리
-  const handleSubmit = () => {
-    if (!userSummary.trim()) {
-      alert('요약문을 입력해주세요.');
-      return;
-    }
-
-    const evaluation = evaluateSummary(userSummary, news);
-    setResult({
-      score: evaluation.score,
-      feedback: evaluation.feedback,
-      userSummary: userSummary,
-      aiSummary: news.aiSummary
-    });
-        
-    // 뱃지 체크 및 모달 표시
-    const badge = checkEarnedBadge(evaluation.score);
-    if (badge) {
-      setEarnedBadge(badge);
-      setShowBadgeModal(true);
-    }
-
-    setIsSubmitted(true);
   };
 
   // 다시하기
