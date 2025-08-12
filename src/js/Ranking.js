@@ -4,7 +4,7 @@ import '../css/Ranking.css';
 import Header from './header';
 import Footer from './footer';
 
-const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function Ranking() {
     const [selectedGrade, setSelectedGrade] = useState('all');

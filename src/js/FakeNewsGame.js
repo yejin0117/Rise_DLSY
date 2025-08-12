@@ -4,7 +4,7 @@ import Header from './header';
 import Footer from './footer';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 
-const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function FakeNewsGame() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

@@ -5,7 +5,7 @@ import Footer from './footer';
 import { FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
   const navigate = useNavigate();

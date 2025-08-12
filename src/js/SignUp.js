@@ -5,7 +5,7 @@ import Header from './header';
 import Footer from './footer';
 import SearchModal from './SearchModal'; 
 
-const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function SignUp() {
   const navigate = useNavigate();

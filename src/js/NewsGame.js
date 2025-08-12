@@ -4,74 +4,7 @@ import Header from './header';
 import Footer from './footer';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 
-  // // ✅ GET: 뉴스 불러오기
-  // const fetchNews = async () => {
-  //   try {
-  //     const response = await fetch('/api/compare-random');
-  //     if (!response.ok) throw new Error('뉴스 불러오기 실패');
-
-  //     const data = await response.json();
-  //     setNews(data);
-  //   } catch (error) {
-  //     console.error('뉴스 로딩 오류:', error);
-  //   }
-  // };
-
-  // // ✅ POST: 요약 제출
-  // const handleSubmit = async () => {
-  //   if (!userSummary.trim()) {
-  //     alert('요약문을 입력해주세요.');
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch('/api/compare-random/submit', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         newsId: news.id,
-  //         userSummary: userSummary,
-  //       }),
-  //     });
-
-  //     if (!response.ok) throw new Error('제출 실패');
-
-  //     const data = await response.json();
-  //     setResult(data);
-  //     setIsSubmitted(true);
-  //   } catch (error) {
-  //     console.error('제출 오류:', error);
-  //     alert('제출 중 오류가 발생했습니다.');
-  //   }
-  // };
-
-
-// 더미 뉴스 데이터
-const dummyNews = [
-  {
-    id: 1,
-    title: "인공지능 활용한 기후변화 예측 시스템 개발",
-    content: "한국과학기술연구원(KIST)은 인공지능을 활용해 기후변화를 더 정확하게 예측할 수 있는 새로운 시스템을 개발했다고 발표했다. 이 시스템은 기존 예측 모델의 정확도를 30% 이상 향상시켰으며, 특히 극단적 기후 현상을 예측하는 데 탁월한 성능을 보였다. 연구팀은 전 세계 기상 데이터와 위성 관측 자료를 AI로 분석하여 이러한 성과를 달성했다고 밝혔다.",
-    aiSummary: "KIST가 개발한 AI 기반 기후변화 예측 시스템이 기존 대비 30% 향상된 정확도를 보임",
-    keywords: ["인공지능", "기후변화", "예측", "KIST", "정확도"]
-  },
-  {
-    id: 2,
-    title: "신규 친환경 전기차 배터리 기술 개발 성공",
-    content: "국내 연구진이 기존 리튬이온 배터리보다 수명은 2배, 충전 속도는 3배 빠른 새로운 친환경 배터리 기술 개발에 성공했다. 이 기술은 희귀 금속 사용량을 90% 줄이면서도 성능은 향상시켜 주목받고 있다. 연구팀은 이 기술이 상용화되면 전기차 가격을 현재보다 30% 이상 낮출 수 있을 것으로 전망했다.",
-    aiSummary: "국내 연구진이 수명 2배, 충전 3배 빠른 친환경 전기차 배터리 기술을 개발해 원가 절감 기대",
-    keywords: ["전기차", "배터리", "친환경", "충전", "원가절감"]
-  },
-  {
-    id: 3,
-    title: "메타버스 활용한 새로운 교육 플랫폼 출시",
-    content: "교육부는 메타버스 기술을 활용한 새로운 교육 플랫폼 '메타에듀'를 다음 달부터 전국 초중고교에 순차적으로 도입한다고 발표했다. 이 플랫폼은 학생들이 가상현실 속에서 역사 현장을 체험하거나 과학 실험을 할 수 있게 해준다. 시범 운영 결과 학생들의 수업 참여도와 이해도가 크게 향상된 것으로 나타났다.",
-    aiSummary: "교육부가 전국 초중고교에 도입 예정인 메타버스 교육 플랫폼으로 학습 효과 향상 기대",
-    keywords: ["메타버스", "교육", "가상현실", "학습효과", "플랫폼"]
-  }
-];
+const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function NewsGame() {
   const [news, setNews] = useState(null);
@@ -79,11 +12,57 @@ function NewsGame() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [result, setResult] = useState(null);
 
-  // 더미 뉴스 불러오기
-  const fetchNews = () => {
-    const randomIndex = Math.floor(Math.random() * dummyNews.length);
-    setNews(dummyNews[randomIndex]);
+  // ✅ GET: 뉴스 불러오기
+  const fetchNews = async () => {
+    try {
+      const response = await fetch(`{SERVER_API}/api/compare-random`);
+      if (!response.ok) throw new Error('뉴스 불러오기 실패');
+
+      const data = await response.json();
+      setNews(data);
+    } catch (error) {
+      console.error('뉴스 로딩 오류:', error);
+    }
   };
+
+  // ✅ POST: 요약 제출
+  const handleSubmit = async () => {
+    if (!userSummary.trim()) {
+      alert('요약문을 입력해주세요.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/compare-random/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          newsId: news.id,
+          userSummary: userSummary,
+        }),
+      });
+
+      if (!response.ok) throw new Error('제출 실패');
+
+      const data = await response.json();
+      setResult(data);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('제출 오류:', error);
+      alert('제출 중 오류가 발생했습니다.');
+    }
+        
+    // 뱃지 체크 및 모달 표시
+    const badge = checkEarnedBadge(evaluation.score);
+    if (badge) {
+      setEarnedBadge(badge);
+      setShowBadgeModal(true);
+    }
+
+  };
+
 
   // 요약 평가 함수
   const evaluateSummary = (userSummary, newsData) => {

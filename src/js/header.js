@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../css/Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 
+const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
+
 function Header() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,7 +12,7 @@ function Header() {
   // ✅ 사용자 프로필 정보를 가져오는 함수
   const fetchUserProfile = async (token) => {
     try {
-      const profileResponse = await fetch('api/users/profile', {
+      const profileResponse = await fetch(`${SERVER_API}/api/users/profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
