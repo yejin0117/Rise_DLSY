@@ -1,8 +1,8 @@
 // Ranking.js
 import React, { useState, useEffect, useMemo } from 'react';
 import '../css/Ranking.css';
-import Header from './header';
-import Footer from './footer';
+
+
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
@@ -119,7 +119,7 @@ function Ranking() {
 
     return (
         <>
-            <Header />
+            
             <div className="ranking-page">
                 <div className="ranking-container">
                     <h1 className="ranking-title">실시간 랭킹</h1>
@@ -198,7 +198,7 @@ function Ranking() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            
         </>
     );
 }

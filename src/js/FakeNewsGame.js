@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/FakeNewsGame.css';
-import Header from './header';
-import Footer from './footer';
+
+
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
@@ -143,7 +143,7 @@ function FakeNewsGame() {
 
   return (
       <>
-        <Header />
+        
         <div className="fake-news-game-container">
           <div className="game-content-fake">
             <h1 className="game-title-fake">가짜 뉴스 판별하기</h1>
@@ -227,7 +227,7 @@ function FakeNewsGame() {
             earnedBadge={earnedBadge}
         />
 
-        <Footer />
+        
       </>
   );
 }

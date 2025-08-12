@@ -1,6 +1,6 @@
 // src/js/NewsGame.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // useRef를 import 합니다.
 import '../css/NewsGame.css';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 import { useNavigate } from 'react-router-dom';
@@ -9,32 +9,41 @@ const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
 function NewsGame() {
   const navigate = useNavigate();
-  const [news, setNews] = useState(null);
+  const [news, setNews] = useState(null); // 여기에는 {id, title, content: "AI 요약본"} 이 담김
   const [userSummary, setUserSummary] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(null); // 여기에는 AI 비교 결과가 담김
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [earnedBadge, setEarnedBadge] = useState(null);
+  const effectRan = useRef(false); // effect가 실행되었는지 추적하기 위한 ref를 추가합니다.
 
   useEffect(() => {
-    const fetchNews = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(`${SERVER_API}/api/compare-random`);
-        if (!response.ok) throw new Error('뉴스 불러오기 실패');
-        const data = await response.json();
-        setNews(data);
-      } catch (error) {
-        setError('뉴스를 불러오는 중 문제가 발생했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNews();
-  }, []);
+    // React의 엄격 모드(Strict Mode)에서 컴포넌트가 두 번 렌더링되어도 fetch가 한 번만 실행되도록 수정합니다.
+    if (effectRan.current === false) {
+      const fetchNews = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const response = await fetch(`${SERVER_API}/api/compare-random`);
+          if (!response.ok) throw new Error('뉴스 불러오기 실패');
+          const data = await response.json();
+          setNews(data);
+        } catch (error) {
+          setError('뉴스를 불러오는 중 문제가 발생했습니다.');
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchNews();
+
+      // effect가 실행되었음을 표시합니다.
+      return () => {
+        effectRan.current = true;
+      };
+    }
+  }, []); // 의존성 배열이 비어있으므로 마운트 시 한 번만 실행됩니다.
 
   const handleSubmit = async () => {
     if (!userSummary.trim()) {
@@ -64,7 +73,7 @@ function NewsGame() {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || '제출 실패');
+        throw new Error(data.error || '제출 실패');
       }
 
       setResult(data);
@@ -100,7 +109,7 @@ function NewsGame() {
           <div className="game-instructions">
             <h2>게임 방법</h2>
             <ul>
-              <li>주어진 뉴스 기사를 읽고 핵심 내용을 한 줄로 요약해보세요.</li>
+              <li>AI가 요약한 뉴스 기사를 읽고 핵심 내용을 한 줄로 요약해보세요.</li>
               <li>AI가 작성한 요약문과 비교하여 점수를 받게 됩니다.</li>
               <li>중요한 키워드를 포함하고, 간결하게 작성할수록 높은 점수를 받을 수 있습니다.</li>
             </ul>
@@ -108,7 +117,9 @@ function NewsGame() {
           {news && (
               <div className="news-article">
                 <h2>{news.title}</h2>
+                {/* 항상 AI가 요약한 '문제용' 기사 본문을 보여줍니다. */}
                 <p>{news.content}</p>
+
                 <div className="summary-input-section">
                   <h3>나의 한 줄 요약</h3>
                   <div className="input-container">
@@ -138,15 +149,17 @@ function NewsGame() {
                       </div>
                       <div className="comparison">
                         <div className="summary-box-feedback">
-                          <h4>AI의 피드백</h4>
-                          <p>{result.feedback}</p>
+                          <h4>AI 비교 결과</h4>
+                          <p><strong>유사도:</strong> {result.similarity}</p>
+                          <p><strong>차이점:</strong> {result.difference}</p>
+                          <p><strong>제안:</strong> {result.suggestion}</p>
                         </div>
                         <div className="summary-box">
                           <h4>나의 요약</h4>
                           <p>{result.userSummary}</p>
                         </div>
                         <div className="summary-box">
-                          <h4>AI의 요약</h4>
+                          <h4>AI의 한 줄 요약</h4>
                           <p>{result.aiSummary}</p>
                         </div>
                       </div>
