@@ -5,6 +5,8 @@ import Header from './header';
 import Footer from './footer';
 import SearchModal from './SearchModal';
 
+const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+
 const defaultBadges = [
     {
         name: "진실 수호자",
@@ -69,7 +71,7 @@ const MyPage = ({ setIsLoggedIn, setCurrentUser, currentUser }) => {
 
         try {
             // ✅ API 요청 주소 수정: 'api/users/profile'로 변경
-            const response = await fetch('/api/users/profile', {
+            const response = await fetch(`${SERVER_API}/api/users/profile`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -168,7 +170,7 @@ const MyPage = ({ setIsLoggedIn, setCurrentUser, currentUser }) => {
 
         try {
             // ✅ API 요청 주소 수정: 'api/users/profile'로 변경
-            const response = await fetch('/api/users/profile', {
+            const response = await fetch(`${SERVER_API}/api/users/profile`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,

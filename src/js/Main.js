@@ -4,6 +4,8 @@ import '../css/Main.css';
 import Header from './header';
 import Footer from './footer';
 
+const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+
 function Main({isLoggedIn, setCurrentUser, currentUser}) {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,7 +18,7 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
   useEffect(() => {
     const fetchRankings = async () => {
       try {
-        const response = await fetch('/api/users/ranking');
+        const response = await fetch(`${SERVER_API}/api/users/ranking`);
         if (!response.ok) {
           throw new Error('랭킹 정보를 가져오는 데 실패했습니다.');
         }

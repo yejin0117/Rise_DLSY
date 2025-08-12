@@ -4,6 +4,8 @@ import '../css/Ranking.css';
 import Header from './header';
 import Footer from './footer';
 
+const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+
 function Ranking() {
     const [selectedGrade, setSelectedGrade] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,15 +28,15 @@ function Ranking() {
             let url = '';
 
             if (selectedGrade === 'all') {
-                url = '/api/users/ranking';
+                url = `${SERVER_API}/api/users/ranking`;
             } else if (selectedGrade === 'bySchool') {
-                url = '/api/users/ranking/school';
+                url = `${SERVER_API}/api/users/ranking/school`;
             } else if (selectedGrade === 'high') {
-                url = '/api/users/ranking/high';
+                url = `${SERVER_API}/api/users/ranking/high`;
             } else if (selectedGrade === 'middle') {
-                url = '/api/users/ranking/middle';
+                url = `${SERVER_API}/api/users/ranking/middle`;
             } else if (selectedGrade === 'elementary') {
-                url = '/api/users/ranking/elementary';
+                url = `${SERVER_API}/api/users/ranking/elementary`;
             }
 
             try {

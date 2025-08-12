@@ -5,6 +5,8 @@ import Header from './header';
 import Footer from './footer';
 import SearchModal from './SearchModal'; 
 
+const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+
 function SignUp() {
   const navigate = useNavigate();
   const [selectedSchool, setSelectedSchool] = useState(null);
@@ -95,7 +97,7 @@ function SignUp() {
 
     try {
       console.log('Submitting form data:', formData);
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch(`${SERVER_API}/api/auth/signup`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

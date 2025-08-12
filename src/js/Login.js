@@ -5,6 +5,8 @@ import Footer from './footer';
 import { FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
+const SERVER_API = process.env.REACT_SERVER_APP_API_URL;
+
 function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -16,7 +18,7 @@ function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
   // ✅ 사용자의 프로필 정보를 가져오는 함수
   const fetchUserProfile = async (token) => {
     try {
-      const profileResponse = await fetch('api/users/profile', {
+      const profileResponse = await fetch(`${SERVER_API}/api/users/profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -74,7 +76,7 @@ function Login({ t, onLoginSuccess, setIsLoggedIn, setCurrentUser }) {
     }
 
     try {
-      const response = await fetch('api/auth/login', {
+      const response = await fetch(`${SERVER_API}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
