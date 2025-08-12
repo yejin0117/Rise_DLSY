@@ -200,33 +200,35 @@ function FakeNewsGame() {
           <h1 className="game-title-fake">가짜 뉴스 판별하기</h1>
           
           {!showResult ? (
-            <div className="news-comparison-container">
-              <p className="question-counter">
-                문제 {currentQuestionIndex + 1} / {newsData.length}
-              </p>
-              <h2 className="game-instruction">어떤 뉴스가 진실인지 선택하세요</h2>
-              <p className="game-hint">기사를 클릭하면 자세히 볼 수 있습니다</p>
-              
-              <div className="news-articles-container">
-                {newsData[currentQuestionIndex].articles.map((article, index) => (
-                  <div key={article.id} className="news-article-card">
-                    <div className="article-preview" onClick={() => openExpandedView(article)}>
-                      <h3 className="article-title">{article.title}</h3>
-                      <p className="article-preview-content">
-                        {article.content.substring(0, 150)}...
-                      </p>
-                      <span className="expand-hint">클릭하여 전체 보기</span>
-                    </div>
-                    <button
-                      className="select-article-button"
-                      onClick={() => handleAnswer(article.id)}
-                    >
-                      이 뉴스가 진실입니다
-                    </button>
-                  </div>
-                ))}
+            newsData.length > 0 ? (
+              <div className="news-card-fake">
+                <p className="question-counter">
+                  문제 {currentQuestionIndex + 1} / {newsData.length}
+                </p>
+                <div className="news-article-fake">
+                  <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
+                  <p className="article-content-fake">
+                    {newsData[currentQuestionIndex]?.article}
+                  </p>
+                </div>
+                <div className="button-container-fake">
+                  <button
+                    className="real-button"
+                    onClick={() => handleAnswer(true)}
+                  >
+                    진짜뉴스
+                  </button>
+                  <button
+                    className="fake-button"
+                    onClick={() => handleAnswer(false)}
+                  >
+                    가짜뉴스
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="error">불러올 뉴스가 없습니다.</div>
+            )
           ) : (
             <div className="result-container">
               <h2 className="result-title">게임 결과</h2>
