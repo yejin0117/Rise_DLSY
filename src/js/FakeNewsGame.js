@@ -184,16 +184,17 @@ function FakeNewsGame() {
           <h1 className="game-title-fake">가짜 뉴스 판별하기</h1>
           
           {!showResult ? (
-            <div className="news-card-fake">
-              <p className="question-counter">
-                문제 {currentQuestionIndex + 1} / {newsData.length}
-              </p>
-              <div className="news-article-fake">
-                <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
-                <p className="article-content-fake">
-                  {newsData[currentQuestionIndex].article}
+            newsData.length > 0 ? (
+              <div className="news-card-fake">
+                <p className="question-counter">
+                  문제 {currentQuestionIndex + 1} / {newsData.length}
                 </p>
-              </div>
+                <div className="news-article-fake">
+                  <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
+                  <p className="article-content-fake">
+                    {newsData[currentQuestionIndex]?.article}
+                  </p>
+                </div>
                 <div className="button-container-fake">
                   <button
                     className="real-button"
@@ -208,7 +209,10 @@ function FakeNewsGame() {
                     가짜뉴스
                   </button>
                 </div>
-            </div>
+              </div>
+            ) : (
+              <div className="error">불러올 뉴스가 없습니다.</div>
+            )
           ) : (
             <div className="result-container">
               <h2 className="result-title">게임 결과</h2>
