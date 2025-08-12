@@ -11,19 +11,30 @@ function NewsGame() {
   const [userSummary, setUserSummary] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  // 뱃지 체크 함수 추가
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [earnedBadge, setEarnedBadge] = useState(null);
 
-  // ✅ GET: 뉴스 불러오기
-  const fetchNews = async () => {
-    try {
-      const response = await fetch(`${SERVER_API}/api/compare-random`);
-      if (!response.ok) throw new Error('뉴스 불러오기 실패');
-
-      const data = await response.json();
-      setNews(data);
-    } catch (error) {
-      console.error('뉴스 로딩 오류:', error);
-    }
-  };
+  useEffect(() => {
+    const fetchNews = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`${SERVER_API}/api/compare-random`);
+        if (!response.ok) throw new Error('뉴스 불러오기 실패');
+        const data = await response.json();
+        setNews(data);
+      } catch (error) {
+        setError('뉴스를 불러오는 중 문제가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNews();
+  }, []);
 
   // ✅ POST: 요약 제출
   const handleSubmit = async () => {
@@ -65,8 +76,6 @@ function NewsGame() {
   }
 };
 
-
-
   // 요약 평가 함수
   const evaluateSummary = (userSummary, newsData) => {
     let score = 0;
@@ -105,15 +114,24 @@ function NewsGame() {
     setResult(null);
     setShowBadgeModal(false);
     setEarnedBadge(null);
+    setError(null);
+    
+    // 새로운 뉴스 불러오기
+    const fetchNews = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${SERVER_API}/api/compare-random`);
+        if (!response.ok) throw new Error('뉴스 불러오기 실패');
+        const data = await response.json();
+        setNews(data);
+      } catch (error) {
+        setError('뉴스를 불러오는 중 문제가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchNews();
   };
-
-  useEffect(() => {
-    fetchNews();
-  }, []);
-  // 뱃지 체크 함수 추가
-  const [showBadgeModal, setShowBadgeModal] = useState(false);
-  const [earnedBadge, setEarnedBadge] = useState(null);
 
   const checkEarnedBadge = (score) => {
     // 뱃지 조건 설정
@@ -132,6 +150,35 @@ function NewsGame() {
     }
     return null;
   };
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="news-game-container">
+          <div className="game-content">
+            <div className="loading-message">뉴스를 불러오는 중입니다...</div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="news-game-container">
+          <div className="game-content">
+            <div className="error-message">{error}</div>
+            <button className="retry-btn" onClick={handleReset}>다시 시도</button>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

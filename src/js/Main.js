@@ -6,11 +6,8 @@ import Footer from './footer';
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
-function Main({isLoggedIn, setCurrentUser, currentUser}) {
+function Main({isLoggedIn, currentUser}) {
   const navigate = useNavigate();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalContent, setModalContent] = useState('');
   const [rankings, setRankings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,7 +22,7 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
           throw new Error('랭킹 정보를 가져오는 데 실패했습니다.');
         }
         const data = await response.json();
-        setRankings(data);
+        setRankings(data.slice(0, 5)); // 상위 5개만 표시
       } catch (err) {
         setError(err.message);
       } finally {
@@ -46,6 +43,12 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
   }, []);
 
   const handleStartGame = (gameType) => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요합니다.");
+      navigate('/login');
+      return;
+    }
+    
     if (gameType === 'summary') {
       navigate('/news-game');
     } else if (gameType === 'factcheck') {
@@ -97,7 +100,7 @@ function Main({isLoggedIn, setCurrentUser, currentUser}) {
                   {
                     icon: '🔍',
                     label: '가짜뉴스 구별',
-                    progress: Math.min((fakeNewsGameCount / 5) * 100, 100),
+                    progress: Math.min((fakeNewsGameCount / 3) * 100, 100),
                     current: fakeNewsGameCount,
                     max: 3,
                     color: 'red',
