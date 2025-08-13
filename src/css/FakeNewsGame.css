@@ -339,10 +339,12 @@
 }
 .retry-button {
   background-color: #764ba2;
+  color: white;
 }
 
 .home-button-fake  {
     background-color: #667eea;
+    color: white;
 }
 
 .real-button:hover,

@@ -23,9 +23,8 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setCurrentUser(null);
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
+    // 로컬스토리지 전체 초기화
+    localStorage.clear();
     window.location.href = '#/';
   };
 
