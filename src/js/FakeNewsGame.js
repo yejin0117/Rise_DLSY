@@ -123,6 +123,10 @@ function FakeNewsGame() {
     }
 
     if (currentQuestionIndex === newsData.length - 1) {
+      // 게임이 완료되었을 때만 카운트 증가
+      const currentCount = parseInt(localStorage.getItem('fakeNewsGameCount') || '0');
+      localStorage.setItem('fakeNewsGameCount', (currentCount + 1).toString());
+      
       const finalScore = isCorrect ? score + 1 : score;
       const badge = checkEarnedBadge(finalScore, newsData.length);
 
