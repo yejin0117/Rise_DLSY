@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; // useRef를 import 합니다.
 import '../css/FakeNewsGame.css';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
+import { checkBadgeAchievement, saveBadges } from '../utils/badgeManager';
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
@@ -59,18 +60,6 @@ function FakeNewsGame() {
     }
   }, []); // 의존성 배열은 비워둡니다.
 
-  // 뱃지 체크 함수
-  const checkEarnedBadge = (finalScore, totalQuestions) => {
-    const percentage = (finalScore / totalQuestions) * 100;
-    if (percentage === 100) {
-      return { name: "공정한 눈", image: "/badges/truth-guardian.png", description: "모든 가짜 뉴스를 완벽하게 구별했습니다!" };
-    }
-    if (percentage >= 75) {
-      return { name: "정확도왕", image: "/badges/news-detective.png", description: "뛰어난 판단력으로 가짜 뉴스를 구별했습니다!" };
-    }
-    return null;
-  };
-
   // 답변 처리 로직
   const handleAnswer = async (isRealSelected) => {
     const currentQuestion = newsData[currentQuestionIndex];
@@ -128,18 +117,27 @@ function FakeNewsGame() {
       localStorage.setItem('fakeNewsGameCount', (currentCount + 1).toString());
       
       const finalScore = isCorrect ? score + 1 : score;
-      const badge = checkEarnedBadge(finalScore, newsData.length);
+      const percentage = (finalScore / newsData.length) * 100;
 
-      if (badge) {
-        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
-        if (!earnedBadges.some(b => b.name === badge.name)) {
-          // BUG FIX: '진실 수호자' -> '공정한 눈'으로 수정하여 뱃지 이름과 일치시킴
-          earnedBadges.push({ ...badge, active: true, gradient: badge.name === "공정한 눈" ? "yellow" : "blue" });
-          localStorage.setItem('earnedBadges', JSON.stringify(earnedBadges));
+      // 뱃지 확인
+      const earnedBadges = checkBadgeAchievement('fakeNews', percentage);
+      
+      if (earnedBadges.length > 0) {
+        // 기존 뱃지 목록 가져오기
+        const existingBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+        
+        // 새로 획득한 뱃지만 필터링
+        const newBadges = earnedBadges.filter(newBadge => 
+          !existingBadges.some(existing => existing.name === newBadge.name)
+        );
+        
+        if (newBadges.length > 0) {
+          saveBadges(newBadges);
+          setEarnedBadge(newBadges[0]); // 첫 번째 새 뱃지 표시
+          setShowBadgeModal(true);
         }
-        setEarnedBadge(badge);
-        setShowBadgeModal(true);
       }
+      
       setShowResult(true);
     } else {
       setCurrentQuestionIndex(prev => prev + 1);
@@ -151,7 +149,26 @@ function FakeNewsGame() {
     window.location.reload();
   };
 
-  if (loading) return <div className="loading">뉴스를 불러오는 중입니다...</div>;
+  if (loading) return (
+    <div className="fake-news-game-container">
+      <div className="game-content-fake">
+        <div className="loading-container">
+          <div className="loading-spinner">
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+            <div className="spinner-ring"></div>
+          </div>
+          <h2 className="loading-title">가짜 뉴스 판별하기</h2>
+          <p className="loading-text">뉴스 기사를 불러오는 중입니다...</p>
+          <div className="loading-dots">
+            <span className="dot"></span>
+            <span className="dot"></span>
+            <span className="dot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
   if (error) return <div className="error">{error}</div>;
 
   return (
@@ -167,7 +184,7 @@ function FakeNewsGame() {
                         문제 {currentQuestionIndex + 1} / {newsData.length}
                       </p>
                       <div className="news-article-fake">
-                        <h2>이 뉴스는 진짜일까요, 가짜일까요?</h2>
+                        <h2>이 뉴스는 <span className='news-article-realSpan'>진짜</span>일까요, <span className='news-article-fakeSpan'>가짜</span>일까요?</h2>
                         <p className="article-content-fake">
                           {newsData[currentQuestionIndex]?.article}
                         </p>
@@ -199,7 +216,7 @@ function FakeNewsGame() {
                       <span className="score-label">정답</span>
                     </div>
                     <div className="score-percentage">
-                      정확도: {Math.round((score / newsData.length) * 100)}%
+                      점수: {Math.round((score / newsData.length) * 100)}점
                     </div>
                   </div>
 

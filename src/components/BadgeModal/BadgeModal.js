@@ -28,7 +28,7 @@ const BadgeModal = ({ isOpen, onClose, earnedBadge }) => {
             />
           </div>
           
-          <div className="badge-description">
+          <div className="badge-description-bm">
             <p>{earnedBadge.description}</p>
           </div>
 

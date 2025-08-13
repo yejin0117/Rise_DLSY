@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/newsLitBlack.png" />
     <!-- 반응형 디자인을 위한 viewport 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
@@ -10,9 +10,9 @@
       name="description"
       content="Web site created using create-react-app"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>디지털 문해력 챌린지</title>
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/newsLitBlack.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/newsLitBlack.json" />
+    <title>NEWSLIT</title>
     <style>
       /* 반응형 로딩 컨테이너: 화면 전체를 차지하며 모든 기기에서 중앙 정렬 */
       .loading-container {
@@ -38,7 +38,7 @@
         border-top: 4px solid #3498db;
         border-radius: 50%;
         animation: spin 1s linear infinite;
-        margin-bottom: 20px;
+        margin-bottom: 20px;        
       }
 
       /* 반응형 텍스트: 가독성 좋은 크기로 설정 */
@@ -56,6 +56,19 @@
       @keyframes fade {
         0%, 100% { opacity: 0.6; }
         50% { opacity: 1; }
+      }
+
+      @media(prefers-color-scheme: dark){
+        .loading-container {
+          background-color: #121212; /* 다크 모드 배경색 */
+          color: #E5E7EB; /* 다크 모드 텍스트 색상 */
+        }
+        .loading-text {
+          color: #E5E7EB; /* 다크 모드 텍스트 색상 */
+        }
+        .loading-spinner {
+          border-top-color: #1E90FF; /* 다크 모드 스피너 색상 */
+        }
       }
     </style>
   </head>

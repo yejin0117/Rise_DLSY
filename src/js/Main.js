@@ -70,9 +70,6 @@ function Main({isLoggedIn, currentUser}) {
     return null;
   };
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
 
   if (error) {
     return <div>오류: {error}</div>;

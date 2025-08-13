@@ -5,6 +5,7 @@ import Header from './header';
 import Footer from './footer';
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 import { useNavigate } from 'react-router-dom';
+import { checkBadgeAchievement, saveBadges } from '../utils/badgeManager';
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
 
@@ -15,6 +16,7 @@ function NewsGame() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [result, setResult] = useState(null); // AI 비교 결과
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false); // 제출 중 로딩 상태
   const [error, setError] = useState(null);
 
   // 뱃지 관련 상태
@@ -61,6 +63,8 @@ function NewsGame() {
       return;
     }
 
+    setSubmitting(true); // 제출 로딩 시작
+
     try {
       const response = await fetch(`${SERVER_API}/api/compare-random/submit`, {
         method: 'POST',
@@ -85,17 +89,31 @@ function NewsGame() {
       const currentCount = parseInt(localStorage.getItem('newsGameCount') || '0');
       localStorage.setItem('newsGameCount', (currentCount + 1).toString());
 
-      // 뱃지 체크
-      const badge = checkEarnedBadge(data.score);
-      if (badge) {
-        setEarnedBadge(badge);
-        setShowBadgeModal(true);
+      // 뱃지 확인
+      const earnedBadges = checkBadgeAchievement('news', data.score);
+      
+      if (earnedBadges.length > 0) {
+        // 기존 뱃지 목록 가져오기
+        const existingBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+        
+        // 새로 획득한 뱃지만 필터링
+        const newBadges = earnedBadges.filter(newBadge => 
+          !existingBadges.some(existing => existing.name === newBadge.name)
+        );
+        
+        if (newBadges.length > 0) {
+          saveBadges(newBadges);
+          setEarnedBadge(newBadges[0]); // 첫 번째 새 뱃지 표시
+          setShowBadgeModal(true);
+        }
       }
 
       setIsSubmitted(true);
     } catch (error) {
       console.error('제출 오류:', error);
       alert('제출 중 오류가 발생했습니다.');
+    } finally {
+      setSubmitting(false); // 제출 로딩 종료
     }
   };
 
@@ -104,32 +122,26 @@ function NewsGame() {
     window.location.reload();
   };
 
-  const checkEarnedBadge = (score) => {
-    if (score >= 80) {
-      return {
-        name: "뉴스 마스터",
-        image: "/badges/summary-master.png",
-        description: "뛰어난 요약 능력을 보여주셨습니다!"
-      };
-    } else if (score >= 75) {
-      return {
-        name: "팩트체커",
-        image: "/badges/key-point.png",
-        description: "뉴스의 핵심을 잘 파악하셨습니다!"
-      };
-    }
-    return null;
-  };
-
   if (loading) {
     return (
-        <>
-          <div className="news-game-container">
-            <div className="game-content">
-              <div className="loading-message">뉴스를 불러오는 중입니다...</div>
+        <div className="news-game-container">
+          <div className="game-content">
+            <div className="loading-container-news">
+              <div className="loading-spinner">
+                <div className="spinner-ring"></div>
+                <div className="spinner-ring"></div>
+                <div className="spinner-ring"></div>
+              </div>
+              <h2 className="loading-title">뉴스 한 줄 요약</h2>
+              <p className="loading-text">뉴스 기사를 불러오는 중입니다...</p>
+              <div className="loading-dots">
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </div>
             </div>
           </div>
-        </>
+        </div>
     );
   }
 
@@ -177,15 +189,29 @@ function NewsGame() {
                       value={userSummary}
                       onChange={(e) => setUserSummary(e.target.value)}
                       placeholder="뉴스의 핵심 내용을 한 줄로 요약해보세요."
-                      disabled={isSubmitted}
+                      disabled={isSubmitted || submitting}
                       maxLength={200}
                   />
                       <div className="char-count">{userSummary.length}/200</div>
                     </div>
-                    {!isSubmitted && (
+                    {!isSubmitted && !submitting && (
                         <button className="submit-btn" onClick={handleSubmit}>
                           제출하기
                         </button>
+                    )}
+                    {submitting && (
+                        <div className="submit-loading-container">
+                          <div className="submit-loading-spinner">
+                            <div className="spinner-ring"></div>
+                            <div className="spinner-ring"></div>
+                          </div>
+                          <p className="submit-loading-text">AI가 요약을 분석하고 있습니다...</p>
+                          <div className="loading-dots">
+                            <span className="dot"></span>
+                            <span className="dot"></span>
+                            <span className="dot"></span>
+                          </div>
+                        </div>
                     )}
                   </div>
 
