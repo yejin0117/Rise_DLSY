@@ -1,7 +1,7 @@
 /* 기본 스타일 */
 .fake-news-game-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   box-sizing: border-box;
@@ -27,11 +27,6 @@
   font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
-.news-card-fake  {
-  margin-bottom: 2rem;
-  width: 100%;
-}
-
 .question-counter {
   text-align: center;
   color: #666;
@@ -39,16 +34,158 @@
   font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
-.news-article-fake  {
+.game-instruction {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.game-hint {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  font-style: italic;
+}
+
+/* 뉴스 비교 컨테이너 */
+.news-comparison-container {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.news-articles-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.news-article-card {
   background-color: #f8f9fa;
-  padding: clamp(1rem, 3vw, 2rem);
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.article-preview {
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+}
+
+.article-title {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.article-preview-content {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.expand-hint {
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  color: #007bff;
+  font-style: italic;
+}
+
+.select-article-button {
+  width: 100%;
+  padding: clamp(0.8rem, 2vw, 1rem);
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select-article-button:hover {
+  background-color: #0056b3;
+}
+
+/* 확대 모달 스타일 */
+.expanded-article-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.expanded-article-content {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.expanded-title {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: #333;
+  margin-bottom: 1.5rem;
+  margin-right: 3rem;
+  line-height: 1.4;
+}
+
+.expanded-content {
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  line-height: 1.6;
+  color: #333;
   margin-bottom: 2rem;
 }
 
-.news-article-fake  h2 {
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  margin-bottom: 1rem;
+.select-from-modal-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select-from-modal-button:hover {
+  background-color: #218838;
 }
 
 .article-content-fake  {
@@ -66,8 +203,6 @@
   flex-wrap: wrap;
 }
 
-.real-button,
-.fake-button,
 .retry-button,
 .home-button-fake  {
   padding: clamp(0.6rem, 2vw, 0.8rem) clamp(1rem, 3vw, 1.5rem);
@@ -81,14 +216,6 @@
   color: white;
 }
 
-.real-button {
-  background-color: #4CAF50;
-}
-
-.fake-button {
-  background-color: #e55147;
-}
-
 .retry-button {
   background-color: #764ba2;
 }
@@ -97,16 +224,12 @@
     background-color: #667eea;
 }
 
-.real-button:hover,
-.fake-button:hover,
 .retry-button:hover,
 .home-button-fake :hover {
   opacity: 0.9;
   transform: translateY(-2px);
 }
 
-.real-button:active,
-.fake-button:active,
 .retry-button:active,
 .home-button-fake :active {
   transform: translateY(0);
@@ -178,6 +301,35 @@
   font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
+.result-articles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.selected-article,
+.correct-article {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.selected-article h4,
+.correct-article h4 {
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+}
+
+.selected-article .article-title,
+.correct-article .article-title {
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+
 /* 미디어 쿼리 */
 @media screen and (max-width: 768px) {
   .fake-news-game-container {
@@ -189,8 +341,22 @@
     padding: 1.5rem;
   }
 
-  .real-button,
-  .fake-button,
+  .news-articles-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .expanded-article-content {
+    max-width: 95%;
+    max-height: 90%;
+    padding: 1.5rem;
+  }
+
+  .result-articles {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .retry-button,
   .home-button-fake  {
     width: 100%;
@@ -203,12 +369,18 @@
     padding: 1rem;
   }
 
-  .news-article-fake  {
+  .news-article-card {
     padding: 1rem;
   }
 
-  .fake-button,
-  .real-button,
+  .expanded-article-content {
+    padding: 1rem;
+  }
+
+  .expanded-title {
+    margin-right: 2rem;
+  }
+
   .retry-button,
   .home-button-fake {
     width:120px;
@@ -251,17 +423,68 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
 
-  .game-title-fake  {
+  .game-title-fake,
+  .game-instruction {
     color: #FFFFFF;
   }
 
-  .question-counter {
+  .question-counter,
+  .game-hint {
+    color: #D1D5DB;
+  }
+
+  .news-article-card {
+    background-color: #2C2C2C;
+    border: 1px solid #404040;
+  }
+
+  .article-title {
+    color: #60A5FA;
+  }
+
+  .article-preview-content {
+    color: #F3F4F6;
+  }
+
+  .expand-hint {
+    color: #60A5FA;
+  }
+
+  .select-article-button {
+    background-color: #1D4ED8;
+  }
+
+  .select-article-button:hover {
+    background-color: #1E40AF;
+  }
+
+  .expanded-article-content {
+    background-color: #1E1E1E;
     color: #ffffff;
   }
 
-  .news-article-fake  {
-    background-color: #2C2C2C;
-    border: 1px solid #404040;
+  .close-button {
+    color: #D1D5DB;
+  }
+
+  .close-button:hover {
+    color: #ffffff;
+  }
+
+  .expanded-title {
+    color: #60A5FA;
+  }
+
+  .expanded-content {
+    color: #F3F4F6;
+  }
+
+  .select-from-modal-button {
+    background-color: #059669;
+  }
+
+  .select-from-modal-button:hover {
+    background-color: #047857;
   }
 
   .article-content-fake  {
@@ -295,6 +518,22 @@
     color: #F3F4F6;
   }
 
+  .selected-article,
+  .correct-article {
+    background-color: #1E1E1E;
+    border: 1px solid #404040;
+  }
+
+  .selected-article h4,
+  .correct-article h4 {
+    color: #60A5FA;
+  }
+
+  .selected-article .article-title,
+  .correct-article .article-title {
+    color: #34D399;
+  }
+
   .result-item.correct {
     border-left: 5px solid #34D399;
     background-color: rgba(52, 211, 153, 0.1);
@@ -305,16 +544,6 @@
     background-color: rgba(248, 113, 113, 0.1);
   }
 
-  /* 버튼 색상 조정 */
-  .real-button {
-    background-color: #4CAF50;
-
-  }
-
-  .fake-button {
-    background-color: #e55147;
-  }
-
   .retry-button {
     background: #764ba2;
   }
@@ -322,25 +551,13 @@
   .home-button-fake {
     background: #ffffff;
     color: #764ba2;
-
   }
 
-  .real-button:hover,
-  .fake-button:hover,
   .retry-button:hover,
   .home-button-fake :hover {
     opacity: 0.9;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-
-  /* 추가적인 시각적 개선 */
-  .news-article-fake  h2 {
-    color: #60A5FA;
-  }
-
-  .detailed-results {
-    gap: 1.5rem;
   }
 
   /* 강조 효과 */

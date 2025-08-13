@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // useRef를 import 합니다.
 import '../css/FakeNewsGame.css';
-
-
 import BadgeModal from '../components/BadgeModal/BadgeModal';
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
@@ -13,45 +11,55 @@ function FakeNewsGame() {
   const [answers, setAnswers] = useState([]);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [earnedBadge, setEarnedBadge] = useState(null);
-  const [newsData, setNewsData] = useState([]); // 초기값을 null에서 빈 배열로 변경
+  const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // StrictMode에서 중복 실행을 방지하기 위한 ref를 추가합니다.
+  const effectRan = useRef(false);
+
   // 뉴스 기사 불러오기 로직 수정
   useEffect(() => {
-    const fetchNewsArticles = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem('jwtToken');
+    // ref를 확인하여 effect가 한 번만 실행되도록 합니다.
+    if (effectRan.current === false) {
+      const fetchNewsArticles = async () => {
+        try {
+          setLoading(true);
+          const token = localStorage.getItem('jwtToken');
 
-        // API를 한 번만 호출하여 문제 배열을 받아옵니다.
-        const response = await fetch(`${SERVER_API}/api/fake-news`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+          const response = await fetch(`${SERVER_API}/api/fake-news`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || '뉴스 기사 로딩 실패');
           }
-        });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || '뉴스 기사 로딩 실패');
+          const data = await response.json();
+          setNewsData(data);
+          setError(null);
+        } catch (error) {
+          console.error('뉴스 기사 로딩 중 오류:', error);
+          setError('뉴스 기사를 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.');
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const data = await response.json();
-        setNewsData(data);
-        setError(null);
-      } catch (error) {
-        console.error('뉴스 기사 로딩 중 오류:', error);
-        setError('뉴스 기사를 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.');
-      } finally {
-        setLoading(false);
-      }
-    };
+      fetchNewsArticles();
 
-    fetchNewsArticles();
-  }, []);
+      // effect가 실행되었음을 표시하는 cleanup 함수를 반환합니다.
+      return () => {
+        effectRan.current = true;
+      };
+    }
+  }, []); // 의존성 배열은 비워둡니다.
 
-  // 뱃지 체크 함수 (임시 로직)
+  // 뱃지 체크 함수
   const checkEarnedBadge = (finalScore, totalQuestions) => {
     const percentage = (finalScore / totalQuestions) * 100;
     if (percentage === 100) {
@@ -63,7 +71,7 @@ function FakeNewsGame() {
     return null;
   };
 
-  // 답변 처리 로직 수정
+  // 답변 처리 로직
   const handleAnswer = async (isRealSelected) => {
     const currentQuestion = newsData[currentQuestionIndex];
     const token = localStorage.getItem('jwtToken');
@@ -72,7 +80,6 @@ function FakeNewsGame() {
     let truthIsFake = false;
 
     try {
-      // 서버에 정답 제출 및 확인 요청
       const response = await fetch(`${SERVER_API}/api/fake-news/submit`, {
         method: 'POST',
         headers: {
@@ -81,7 +88,7 @@ function FakeNewsGame() {
         },
         body: JSON.stringify({
           questionToken: currentQuestion.questionToken,
-          userAnswerIsFake: !isRealSelected // "진짜" 선택 시 false, "가짜" 선택 시 true
+          userAnswerIsFake: !isRealSelected
         })
       });
 
@@ -122,7 +129,8 @@ function FakeNewsGame() {
       if (badge) {
         const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
         if (!earnedBadges.some(b => b.name === badge.name)) {
-          earnedBadges.push({ ...badge, active: true, gradient: badge.name === "진실 수호자" ? "yellow" : "blue" });
+          // BUG FIX: '진실 수호자' -> '공정한 눈'으로 수정하여 뱃지 이름과 일치시킴
+          earnedBadges.push({ ...badge, active: true, gradient: badge.name === "공정한 눈" ? "yellow" : "blue" });
           localStorage.setItem('earnedBadges', JSON.stringify(earnedBadges));
         }
         setEarnedBadge(badge);
@@ -134,6 +142,7 @@ function FakeNewsGame() {
     }
   };
 
+  // 게임 재시작 함수
   const resetGame = () => {
     window.location.reload();
   };
@@ -143,7 +152,6 @@ function FakeNewsGame() {
 
   return (
       <>
-        
         <div className="fake-news-game-container">
           <div className="game-content-fake">
             <h1 className="game-title-fake">가짜 뉴스 판별하기</h1>
@@ -220,14 +228,11 @@ function FakeNewsGame() {
             )}
           </div>
         </div>
-
         <BadgeModal
             isOpen={showBadgeModal}
             onClose={() => setShowBadgeModal(false)}
             earnedBadge={earnedBadge}
         />
-
-        
       </>
   );
 }
