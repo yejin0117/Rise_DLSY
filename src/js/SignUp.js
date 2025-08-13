@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/SignUp.css';
-import Header from './header';
-import Footer from './footer';
+
+
 import SearchModal from './SearchModal'; 
 
 const SERVER_API = process.env.REACT_APP_SERVER_API_URL;
@@ -119,7 +119,7 @@ function SignUp() {
 
   return (
     <>
-      <Header/>
+      
       <div className="signup-container">
         <div className="signup-box">
           <button className="close-button" onClick={() => navigate('/')}>×</button>
@@ -241,7 +241,7 @@ function SignUp() {
           setFormData={setFormData}
         />
       </div>
-      <Footer/>
+      
     </>
   );
 }
